@@ -50,7 +50,7 @@
 
         <h3>5. 关于</h3>
         <p>本程序旨在利用手机传感器提供便捷的深度测量工具，代码开源，并免费离线使用。</p>
-        <p>Github地址：<a href="https://github.com/hikwin/ToFRangefinder">https://github.com/hikwin/ToFRangefinder</a></p>
+        <p>Github地址：<a href="https://github.com/hikwin/tof-rangefinder">https://github.com/hikwin/tof-rangefinder</a></p>
         <p>开源协议：Apache License 2.0</p>
         <br>
     ]]></string>

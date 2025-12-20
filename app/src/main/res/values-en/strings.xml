@@ -50,7 +50,7 @@
 
         <h3>5. About</h3>
         <p>This app utilizes phone sensors to provide convenient depth measurement tools. Open source and free for offline use.</p>
-        <p>Github: <a href="https://github.com/hikwin/ToFRangefinder">https://github.com/hikwin/ToFRangefinder</a></p>
+        <p>Github: <a href="https://github.com/hikwin/tof-rangefinder">https://github.com/hikwin/tof-rangefinder</a></p>
         <p>License: Apache License 2.0</p>
         <br>
     ]]></string>
