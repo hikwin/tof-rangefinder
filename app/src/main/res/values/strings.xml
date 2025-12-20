@@ -1,0 +1,250 @@
+<resources>
+    <string name="app_name">ToF测距仪</string>
+    <string name="error_no_camera">摄像头不可用</string>
+    <string name="error_permission">需要摄像头权限</string>
+    <string name="error_tof_unsupport">设备不支持ToF传感器</string>
+    <string name="error_invalid_data">无效数据</string>
+    <string name="error_out_of_range">超出量程</string>
+    <string name="status_initializing">准备中…</string>
+    <string name="home_title">ToF测距仪</string>
+    <string name="mode_tof">ToF传感器</string>
+    <string name="mode_start">开始</string>
+    <string name="status_no_data">无数据或未识别传感器</string>
+    <string name="mode_select_sensors">可选传感器（可多选，未选则自动匹配）：</string>
+    <string name="compass_heading">方位</string>
+    <string name="crosshair_color_label">准星颜色</string>
+    <string name="title_toolbox">工具箱</string>
+    <string name="color_red">红色</string>
+    <string name="color_green">绿色</string>
+    <string name="color_blue">蓝色</string>
+    <string name="color_yellow">黄色</string>
+    <string name="color_cyan">青色</string>
+    <string name="color_white">白色</string>
+    <string name="home_intro_body"><![CDATA[
+        <br>
+        <h3>1. 软件介绍</h3>
+        <p>通过发射红外光或激光脉冲传感器，计算光子反射回来的飞行时间（Time of Flight）来得出距离。无需 ARCore 支持，因此确保有该传感器。部分物体（如黑色吸光物体、透明玻璃）可能无法准确反射信号。</p>
+        <p>测量范围与精度：取决于手机硬件，例如某些手机小于80cm或超过3m就测试不出正确数据；单位一般为毫米。</p>
+        <br>
+
+        <h3>2. 操作指南</h3>
+        <ul>
+            <li><b>准星 (Crosshair)：</b>屏幕中心的十字准星代表测量点。长按准星可拖动位置，方便对准特定物体。</li><br>
+            <li><b>锁定 (Lock)：</b>点击锁形图标，锁定界面交互。防止误触移动准星。</li><br>
+            <li><b>暂停/恢复 (Pause/Resume)：</b>点击暂停按钮，锁定当前读数。此时会自动将距离、角度、时间保存到历史记录。</li><br>
+            <li><b>倒计时 (Timer)：</b>点击左上角计时图标，设置延迟秒数。适用于自拍测身高、测墙距等无法直视屏幕的场景。倒计时结束后自动暂停并保存数据。</li>
+        </ul>
+        <br>
+
+        <h3>3. 数据记录与导出</h3>
+        <ul>
+            <li><b>历史记录：</b>默认每次暂停时自动记录，也可在设置中切换手动记录。包含距离、V/H 角度（俯仰/偏航）、指南针方位角。在历史页可长按删除、点击添加备注。</li><br>
+            <li><b>单位切换：</b>在历史页右上角点击标尺图标，可在 mm/cm/m 之间切换。</li><br>
+            <li><b>导出与分享：</b>在设置中，可将记录导出为 Excel (.xlsx)、CSV 或 Markdown 格式，或直接分享给其他应用。</li>
+        </ul>
+        <br>
+
+        <h3>4. 工具说明</h3>
+        <p>菜单中点击工具即可打开工具箱，利用手机传感器获取实现各种测量，目前可以测量距离、角度、水平、方向、高度、气压、声音分贝、光照等。后续可能会继续更新与增加其它功能。</p>
+        <br>
+
+        <h3>5. 关于</h3>
+        <p>本程序旨在利用手机传感器提供便捷的深度测量工具，代码开源，并免费离线使用。</p>
+        <p>Github地址：<a href="https://github.com/hikwin/ToFRangefinder">https://github.com/hikwin/ToFRangefinder</a></p>
+        <p>开源协议：Apache License 2.0</p>
+        <br>
+    ]]></string>
+
+    <!-- New Strings for UI -->
+    <string name="mode_select_candidates_title">可选传感器</string>
+    <string name="mode_select_candidates_hint">（可多选，未选则自动匹配）</string>
+    <string name="mode_select_btn_start">开始测量</string>
+
+    <!-- Two Step Measurement -->
+    <string name="tool_two_step_title">两步测距 (距离&amp;高度)</string>
+    <string name="label_camera_height">相机高度</string>
+    <string name="step_1_instruction">步骤1：对准物体底部\n(与地面接触点)</string>
+    <string name="step_2_instruction">步骤2：对准物体顶部</string>
+    <string name="step_done_instruction">测量完成</string>
+    <string name="btn_record_bottom">记录底部</string>
+    <string name="btn_record_top">记录顶部</string>
+    <string name="btn_reset">重置</string>
+    <string name="label_distance">水平距离</string>
+    <string name="label_height">物体高度</string>
+
+    <!-- Eye Height Calculator -->
+    <string name="eye_height_btn">使用人眼高度</string>
+    <string name="eye_calc_title">人眼高度计算器</string>
+    <string name="eye_calc_desc">计算说明：根据身高估算人眼高度，估算完成后选择“快捷输入”自动填入数据。\n\n测距说明：测量时请保持站立，将手机(摄像头)举至与人眼平齐，然后根据指引操作。\n\n测距原理：通过三角函数计算，由于手持相机无法保证完美操作，对于过远或过小目标精度较差，可完成大概估算距离或高度任务。</string>
+    <string name="eye_calc_gender_male">男性</string>
+    <string name="eye_calc_gender_female">女性</string>
+    <string name="eye_calc_height_hint">身高 (cm)</string>
+    <string name="eye_calc_shoe_std">通用鞋 (36mm)</string>
+    <string name="eye_calc_shoe_custom">自定义鞋跟</string>
+    <string name="eye_calc_shoe_hint">鞋跟高 (mm)</string>
+    <string name="btn_calc">计算眼高</string>
+    <string name="btn_quick_input">快捷输入</string>
+    <string name="calc_result_format">计算结果：%.1f cm</string>
+
+    <!-- Lightning Distance Tool -->
+    <string name="tool_lightning_title">闪电测距</string>
+    <string name="label_light_sensor">环境亮度 (Lux)</string>
+    <string name="label_sound_sensor">环境噪音 (dB)</string>
+    <string name="label_lightning_distance">雷电发生距离</string>
+    <string name="label_time_gap">时间间隔：-- ms</string>
+    <string name="btn_start_monitor">开始监测</string>
+    <string name="btn_stop_monitor">结束监测</string>
+    <string name="error_no_mic_permission">需要录音权限来检测雷声</string>
+    <string name="msg_monitoring_started">监测已开始，请等待闪电和雷声...</string>
+    <string name="msg_monitoring_stopped">监测结束</string>
+    <string name="msg_calc_success">计算成功</string>
+    <string name="error_calc_failed">未能检测到明显的闪电或雷声</string>
+    <string name="lightning_help_title">闪电测距原理</string>
+    <string name="lightning_help_content">原理：利用光速与声速的差异。闪电发生时，光速极快（几乎瞬间到达），而声速约为340米/秒。通过记录看到闪光到听到雷响的时间差，即可估算距离。\n\n操作：在雷雨天气开始监测，待第一个闪电、雷声过去后停止监测即可。如果不是雷雨天，本工具亦可作为普通的分贝仪、光度仪使用。</string>
+    <string name="noise_level_0">极静</string>
+    <string name="noise_level_1">安静</string>
+    <string name="noise_level_2">正常，舒适谈话</string>
+    <string name="noise_level_3">略吵</string>
+    <string name="noise_level_4">很吵，长期伤神经</string>
+    <string name="noise_level_5">短时可能听力受损</string>
+    <string name="title_settings_crosshair">两步测距设置</string>
+    <string name="label_crosshair_style">准星样式</string>
+    <string name="style_icon_only">仅图标 (默认)</string>
+    <string name="style_lines_only">仅十字线</string>
+    <string name="style_both">图标 + 十字线</string>
+    <string name="style_sniper">瞄准镜</string>
+    <string name="label_guide_line_color">辅助线颜色</string>
+    <!-- Settings -->
+    <string name="settings_title">设置</string>
+    <string name="pref_language">语言 (Language)</string>
+    <string name="pref_language_auto">跟随系统 (Auto)</string>
+    <string name="pref_language_zh">简体中文</string>
+    <string name="pref_language_en">English</string>
+
+    <string name="settings_appearance">外观</string>
+    <string name="settings_theme">颜色主题</string>
+    <string name="settings_measure">测量设置</string>
+    <string name="settings_save_mode">数据保存方式</string>
+    <string name="settings_auto">自动</string>
+    <string name="settings_manual">手动</string>
+    <string name="settings_history_limit">保留最近记录条数</string>
+    <string name="hint_history_limit">默认200，0为不限制</string>
+    <string name="btn_save">保存</string>
+    <string name="settings_data_mgmt">数据管理</string>
+    <string name="btn_export">导出记录数据</string>
+    <string name="btn_share">分享记录数据</string>
+    <string name="btn_clear">清空所有记录</string>
+    <string name="settings_backup_restore">数据备份与恢复</string>
+    <string name="btn_backup">备份</string>
+    <string name="btn_restore">恢复</string>
+    <string name="msg_save_success">设置已保存</string>
+    <string name="error_invalid_number">请输入有效的数字</string>
+    <string name="msg_records_cleared">记录已清空</string>
+    <string name="msg_export_success">导出成功</string>
+    <string name="msg_export_fail">导出失败: %s</string>
+    <string name="msg_share_fail">分享失败: %s</string>
+    <string name="msg_import_success">成功导入 %d 条记录</string>
+    <string name="msg_import_fail">导入失败: 数据格式错误或文件损坏</string>
+    <string name="dialog_clear_title">警告</string>
+    <string name="dialog_clear_msg">确定要清空所有测量记录吗？此操作不可撤销！</string>
+    <string name="btn_confirm_clear">清空</string>
+    <string name="btn_cancel">取消</string>
+    <string name="theme_follow_system">跟随系统</string>
+    <string name="theme_light">亮色</string>
+    <string name="theme_dark">暗色</string>
+    <string name="title_share">分享记录</string>
+    <string name="title_history">测量记录</string>
+    <string name="title_help">帮助与说明</string>
+    <string name="menu_tools">工具</string>
+    <string name="menu_help">帮助</string>
+    <string name="menu_settings">设置</string>
+    <string name="dialog_countdown_title">设置倒计时（秒）</string>
+    <string name="label_seconds">秒</string>
+    <string name="btn_confirm">确定</string>
+    <string name="dialog_note_title">输入备注</string>
+    <string name="msg_record_saved">记录已保存</string>
+    <string name="btn_close">关闭</string>
+    <string name="msg_invalid_data_save">无效的数据，无法保存</string>
+    
+    <!-- Tools -->
+    <string name="tool_ruler">直尺</string>
+    <string name="tool_protractor">量角器</string>
+    <string name="tool_level">水平仪</string>
+    <string name="tool_compass">指南针</string>
+    <string name="tool_altitude">海拔高度</string>
+    <string name="tool_frame_alignment">相框扶正</string>
+    <string name="tool_two_step">两步测距</string>
+    <string name="tool_lightning">闪电测距</string>
+    <string name="msg_opening_tool">即将打开: %s</string>
+
+    <!-- History -->
+    <string name="msg_long_press_delete">请长按选择要删除的记录</string>
+    <string name="dialog_delete_title">确认删除</string>
+    <string name="dialog_delete_msg">确定要删除选中的 %d 条记录吗？</string>
+    <string name="btn_delete">删除</string>
+    <string name="dialog_edit_note_title">编辑备注</string>
+    <string name="unit_mm">毫米 (mm)</string>
+    <string name="unit_cm">厘米 (cm)</string>
+    <string name="unit_m">米 (m)</string>
+
+    <!-- Export -->
+    <string name="export_md">纯文本 (Markdown)</string>
+    <string name="export_csv">表格 (CSV)</string>
+    <string name="export_xlsx">Excel (XLSX)</string>
+    <string name="ruler_calib_card">银行卡/身份证-长边 (85.60mm)</string>
+    <string name="ruler_calib_ruler">标准尺子 (50mm)</string>
+    <string name="ruler_calib_reset">恢复默认</string>
+    <string name="ruler_calib_title">选择校准参照物\n(一般不需要校准，若有偏差时使用)</string>
+    <string name="ruler_calib_msg_card">请移动红线至卡片边缘</string>
+    <string name="ruler_calib_msg_ruler">请移动红线到尺子5cm处</string>
+    <string name="ruler_msg_reset_success">已恢复默认设置</string>
+    <string name="ruler_msg_saved">校准已保存</string>
+    <string name="ruler_guide_text">请将物体对齐屏幕上左线边缘</string>
+    <string name="btn_calibrate">校准</string>
+    <!-- Level Tool -->
+    <string name="title_level">水平仪</string>
+    <string name="level_mode_flat">平面</string>
+    <string name="level_mode_side">底侧</string>
+    <string name="level_mode_face">左侧</string>
+    <string name="level_btn_delay">开始延时测量 (5秒)</string>
+
+    <!-- Compass Tool -->
+    <string name="title_compass">指南针</string>
+    <string name="compass_init_text">0° 北</string>
+    <string name="compass_field_fmt">磁场强度: %d µT</string>
+    <string name="compass_n">北</string>
+    <string name="compass_ne">东北</string>
+    <string name="compass_e">东</string>
+    <string name="compass_se">东南</string>
+    <string name="compass_s">南</string>
+    <string name="compass_sw">西南</string>
+    <string name="compass_w">西</string>
+    <string name="compass_nw">西北</string>
+
+
+    <!-- Altitude Tool -->
+    <string name="title_altitude">海拔与气压</string>
+    <string name="alt_label_baro">气压海拔</string>
+    <string name="alt_label_gps">GPS 海拔 &amp; 经纬度</string>
+    <string name="alt_permission_btn">获取位置权限</string>
+    <string name="alt_label_boiling">预计沸点 (水的沸点)</string>
+    <string name="alt_toast_permission">需要GPS权限以获取位置高度</string>
+
+    <!-- Frame Alignment Tool -->
+    <string name="frame_guide_text">请保持手机与墙壁平行\n将十字角对准相框的直角边\n适合无法用水平仪测量的场景</string>
+    <string name="frame_toast_permission">需要相机权限</string>
+    <string name="status_no_sensor">无传感器</string>
+    <string name="status_not_supported">设备不支持</string>
+    <string name="error_gps">GPS错误: %s</string>
+    <string name="level_status_ready">准备...</string>
+    <string name="level_status_countdown">倒计时: %d</string>
+    <string name="level_btn_retry">再次测量</string>
+    <string name="level_msg_done">测量完成！</string>
+    <string name="level_instr_bottom">请将手机充电口底侧放被测面</string>
+    <string name="level_instr_tilt">手机稍微倾斜</string>
+    <string name="level_instr_left">请将手机左侧边放被测面</string>
+    <string name="protractor_toast_permission">需要相机权限以显示预览</string>
+    <string name="two_step_msg_height_set">已填入相机高度，请将手机举至与眼平齐进行测量</string>
+    <string name="two_step_msg_height_invalid">请输入有效身高</string>
+    <string name="two_step_msg_calc_first">请先计算结果</string>
+</resources>

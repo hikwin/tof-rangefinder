@@ -1,0 +1,37 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    
+    <!-- Outer Circle REMOVED as per request -->
+    <!-- Inner Circle -->
+    <path
+        android:pathData="M50,50m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="0.5"/>
+        
+    <!-- Horizontal Line -->
+    <path
+        android:pathData="M2,50 L98,50"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="0.5"/>
+
+    <!-- Vertical Line -->
+    <path
+        android:pathData="M50,2 L50,98"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="0.5"/>
+        
+    <!-- Thick markers at edges for sniper look -->
+    <path
+        android:pathData="M2,50 L10,50 M90,50 L98,50 M50,2 L50,10 M50,90 L50,98"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"/>
+
+    <!-- Center Dot -->
+    <path
+        android:pathData="M50,50m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0"
+        android:fillColor="#FFFFFFFF"/>
+        
+</vector>

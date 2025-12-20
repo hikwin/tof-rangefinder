@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/brand_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_toolbox"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="#1A000000" />
+
+    <GridView
+        android:id="@+id/gridViewTools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="150dp"
+        android:numColumns="2"
+        android:verticalSpacing="16dp"
+        android:horizontalSpacing="16dp"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        android:stretchMode="columnWidth"
+        android:gravity="center" />
+</LinearLayout>

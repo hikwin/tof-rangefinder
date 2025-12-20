@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/brand_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_altitude"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Barometer Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_glass_button"
+            android:padding="20dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_tool_altitude"
+                android:layout_marginBottom="12dp"
+                android:alpha="0.8"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alt_label_baro"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvBarometerAltitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-- m"
+                android:textColor="@color/text_primary"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tvPressure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-- hPa"
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <!-- GPS Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_glass_button"
+            android:padding="20dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@android:drawable/ic_menu_mylocation" 
+                android:tint="@color/text_primary"
+                android:layout_marginBottom="12dp"
+                android:alpha="0.8"/> 
+                <!-- Using system default location icon or vector if available. 
+                     Ideally we should create a custom one but for now system one or generic is fine. 
+                     Wait, referencing @android:drawable/ic_menu_mylocation might be risky with Theme.
+                     I'll stick to a placeholder or reuse compass icon temporarily if I don't create a new one.
+                     Let's use ic_tool_compass for now or define a new vector. 
+                     Actually, I should create ic_gps.xml. I'll do that in next step.
+                     For now putting placeholder src.
+                -->
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alt_label_gps"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvGpsAltitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-- m"
+                android:textColor="@color/text_primary"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"/>
+                
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lat: --\nLon: --"
+                android:gravity="center"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"/>
+                
+            <Button
+                android:id="@+id/btnGrantGps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alt_permission_btn"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Boiling Point Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_glass_button"
+            android:padding="20dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alt_label_boiling"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+                    
+                <TextView
+                    android:id="@+id/tvBoilingPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- °C"
+                    android:textColor="@color/brand_primary"
+                    android:textSize="28sp"
+                    android:textStyle="bold" 
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+            
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_tool_altitude" 
+                android:alpha="0.6"/> <!-- Placeholder icon -->
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

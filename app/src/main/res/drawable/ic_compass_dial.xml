@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Outer Ring -->
+    <path
+        android:pathData="M100,10 A90,90 0 1,0 100,190 A90,90 0 1,0 100,10"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:fillColor="#00000000"/>
+        
+    <!-- Ticks -->
+    <path
+        android:pathData="M100,10 L100,25 M100,190 L100,175 M10,100 L25,100 M190,100 L175,100"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"/>
+        
+    <!-- N S E W Text Placeholders (implied by position) -->
+    <!-- Usually we rotate this entire image. Let's make a simple graphic -->
+    
+    <!-- North Marker -->
+    <path
+        android:pathData="M90,40 L110,40 L100,25 Z"
+        android:fillColor="#FF0000"/>
+        
+    <!-- Center Dot -->
+    <path
+        android:pathData="M100,100 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
+        android:fillColor="#FFFFFF"/>
+</vector>

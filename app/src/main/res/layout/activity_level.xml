@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/brand_background"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_level"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="16dp"/>
+
+    <win.hik.tofchizi.LevelView
+        android:id="@+id/levelView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+        
+    <!-- Mode Switcher -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/bg_glass_button"
+        android:padding="4dp"
+        android:layout_marginBottom="16dp">
+        
+        <Button
+            android:id="@+id/btnModeFlat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/level_mode_flat"
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_primary"
+            style="?android:attr/borderlessButtonStyle"/>
+            
+        <View android:layout_width="1dp" android:layout_height="24dp" android:background="#44FFFFFF"/>
+            
+        <Button
+            android:id="@+id/btnModeSide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/level_mode_side"
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_secondary"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <View android:layout_width="1dp" android:layout_height="24dp" android:background="#44FFFFFF"/>
+            
+        <Button
+            android:id="@+id/btnModeFaceDown"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/level_mode_face"
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_secondary"
+            style="?android:attr/borderlessButtonStyle"/>
+    </LinearLayout>
+    
+    <!-- Countdown Trigger Button (Initially Hidden) -->
+    <Button
+        android:id="@+id/btnStartMeasure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/level_btn_delay"
+        android:backgroundTint="@color/brand_primary"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
+</LinearLayout>

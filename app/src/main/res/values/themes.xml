@@ -1,0 +1,68 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Tofchizi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="android:windowBackground">@color/brand_background</item>
+        <item name="android:textColor">@color/text_primary</item>
+        
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:statusBarColor">@color/brand_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/brand_background</item>
+        
+        <!-- Default Button Style -->
+        <item name="materialButtonStyle">@style/Widget.Tofchizi.Button</item>
+        <item name="cardViewStyle">@style/Widget.Tofchizi.CardView</item>
+    </style>
+
+    <style name="Widget.Tofchizi.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="Widget.Tofchizi.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardBackgroundColor">@color/brand_surface</item>
+        <item name="contentPadding">16dp</item>
+    </style>
+    
+
+    <style name="Widget.Tofchizi.BottomBar" parent="">
+        <item name="android:background">@drawable/bg_bottom_bar</item>
+    </style>
+
+    <!-- Force Dark Theme for specific activities -->
+    <style name="Theme.Tofchizi.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="android:windowBackground">@color/fixed_dark_background</item>
+        <item name="android:textColor">@color/fixed_dark_text</item>
+        <item name="android:textColorSecondary">@color/fixed_dark_text_secondary</item>
+        
+        <!-- Ensure cards and surfaces are dark -->
+        <item name="cardViewStyle">@style/Widget.Tofchizi.CardView.Dark</item>
+        
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:statusBarColor">@color/fixed_dark_background</item>
+        <item name="android:navigationBarColor">@color/fixed_dark_background</item>
+        
+        <!-- Fix PopupMenu text color -->
+        <item name="android:popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
+        <item name="popupMenuBackground">@color/fixed_dark_surface</item>
+        <item name="android:textColorPrimary">@color/fixed_dark_text</item>
+    </style>
+
+    <style name="Widget.Tofchizi.CardView.Dark" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardBackgroundColor">@color/fixed_dark_surface</item>
+        <item name="contentPadding">16dp</item>
+    </style>
+</resources>

@@ -1,0 +1,128 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <FrameLayout
+        android:id="@+id/aspectRatioContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="9:16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextureView
+            android:id="@+id/textureView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <win.hik.tofchizi.CrosshairOverlay
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/countdownOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="96dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:visibility="gone"
+        android:shadowColor="#80000000"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/manualSaveContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDirectSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直接保存"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_glass_dark"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="12dp"
+            android:layout_marginEnd="16dp"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNoteSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="备注保存"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_glass_dark"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="12dp"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginHorizontal="24dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:id="@+id/tvCountdown"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="⏱️ 0s"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvPause"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="⏸︎"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/tvLock"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:padding="8dp"
+            android:text="🔓"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/brand_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomActionArea">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/home_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_title"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/brand_accent"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="0.05"
+                android:shadowColor="@color/title_shadow"
+                android:shadowDx="0"
+                android:shadowDy="4"
+                android:shadowRadius="8" />
+
+            <!-- Settings Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                style="@style/Widget.Tofchizi.CardView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/crosshair_color_label"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCrosshair"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_spinner"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Sensors Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                style="@style/Widget.Tofchizi.CardView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_select_candidates_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_select_candidates_hint"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:id="@+id/candidateListContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Action Area -->
+    <LinearLayout
+        android:id="@+id/bottomActionArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="@color/brand_background"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMenu"
+            android:layout_width="56dp"
+            android:layout_height="64dp"
+            app:icon="@drawable/ic_menu_list"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:cornerRadius="16dp"
+            android:backgroundTint="@color/brand_surface_variant"
+            app:iconTint="@color/text_primary"
+            android:layout_marginEnd="12dp"
+            style="@style/Widget.MaterialComponents.Button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:text="@string/mode_select_btn_start"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="32dp"
+            style="@style/Widget.MaterialComponents.Button" />
+        
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHistory"
+            android:layout_width="56dp"
+            android:layout_height="64dp"
+            app:icon="@drawable/ic_history"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:cornerRadius="16dp"
+            android:backgroundTint="@color/brand_surface_variant"
+            app:iconTint="@color/text_primary"
+            android:layout_marginStart="12dp"
+            style="@style/Widget.MaterialComponents.Button" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

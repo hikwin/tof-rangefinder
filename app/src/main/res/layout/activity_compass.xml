@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/brand_background"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_compass"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="48dp" />
+
+    <!-- Compass Dial Container -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+        
+        <win.hik.tofchizi.CompassView
+            android:id="@+id/compassView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/compass_init_text"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_glass_button"
+        android:padding="12dp">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_tool_compass"
+            android:layout_marginEnd="8dp"/>
+            
+        <TextView
+            android:id="@+id/tvMagneticField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/compass_field_fmt"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

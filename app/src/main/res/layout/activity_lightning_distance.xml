@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#20888888"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_menu_list"
+            android:rotation="180"
+            app:tint="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/tool_lightning_title"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_help"
+            app:tint="?android:attr/textColorPrimary" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Light Sensor Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_light_sensor"
+                android:textColor="@color/brand_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLightValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0.0 Lux"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="24sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"/>
+
+            <win.hik.tofchizi.RealtimeGraphView
+                android:id="@+id/graphLight"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="24dp"
+                android:background="#1A888888"/>
+
+            <!-- Sound Sensor Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_sound_sensor"
+                android:textColor="@color/brand_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tvSoundValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0.0 dB"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tvNoiseLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="2dp" />
+            </LinearLayout>
+
+            <win.hik.tofchizi.RealtimeGraphView
+                android:id="@+id/graphSound"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="24dp"
+                android:background="#1A888888"/>
+                
+            <!-- Result Display -->
+            <LinearLayout
+                android:id="@+id/layoutResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_glass_button"
+                android:padding="16dp"
+                android:visibility="invisible"
+                tools:visibility="visible">
+                <!-- Note: bg_glass_button has fixed white background? Need to check. -->
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_lightning_distance"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp"/>
+                
+                <TextView
+                    android:id="@+id/tvResultDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- m"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="32sp"
+                    android:textStyle="bold"/>
+                    
+                <TextView
+                    android:id="@+id/tvResultTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_time_gap"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#20888888">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_start_monitor"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/brand_primary"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_stop_monitor"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#FF4444"
+            android:textColor="@color/white"
+            android:enabled="false"/>
+    </LinearLayout>
+
+</LinearLayout>

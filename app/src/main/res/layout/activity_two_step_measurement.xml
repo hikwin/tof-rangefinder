@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <TextureView
+        android:id="@+id/viewFinder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Sniper Scope -->
+    <ImageView
+        android:id="@+id/ivSniperScope"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="32dp"
+        android:src="@drawable/ic_crosshair_sniper"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Crosshair Icon -->
+    <ImageView
+        android:id="@+id/ivCrosshair"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_crosshair_small_dot"
+        app:tint="@color/brand_primary"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- Reference container for size (half screen width, square) -->
+    <View
+        android:id="@+id/crosshairReference"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <!-- Horizontal Line -->
+    <View
+        android:id="@+id/lineHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#C0FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/crosshairReference"
+        app:layout_constraintEnd_toEndOf="@id/crosshairReference"
+        app:layout_constraintStart_toStartOf="@id/crosshairReference"
+        app:layout_constraintTop_toTopOf="@id/crosshairReference" />
+
+    <!-- Vertical Line -->
+    <View
+        android:id="@+id/lineVertical"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="#C0FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/crosshairReference"
+        app:layout_constraintEnd_toEndOf="@id/crosshairReference"
+        app:layout_constraintStart_toStartOf="@id/crosshairReference"
+        app:layout_constraintTop_toTopOf="@id/crosshairReference" />
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_menu_list"
+            android:rotation="180"
+            app:tint="@color/white" />
+            <!-- Using rotated menu as back arrow placeholder or just ensure we have back arrow -->
+            <!-- Actually better to use a close icon or similar if available, or just standard back -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/tool_two_step_title"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+            
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+            
+        <TextView
+            android:id="@+id/tvAngleDebug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#AAAAAA"
+            android:textSize="12sp"
+            tools:text="-45.0°" />
+    </LinearLayout>
+
+    <!-- Bottom Controls -->
+    <LinearLayout
+        android:id="@+id/bottomPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B3000000"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Input Height Row -->
+        <LinearLayout
+            android:id="@+id/layoutInputHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_camera_height"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/etCameraHeight"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_glass_dark_input"
+                android:inputType="numberDecimal"
+                android:padding="8dp"
+                android:text="150"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:singleLine="true"/>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cm"
+                android:textColor="@color/white"
+                android:layout_marginStart="4dp"/>
+
+            <TextView
+                android:id="@+id/btnEyeHeightHelper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eye_height_btn"
+                android:textColor="@color/brand_primary"
+                android:padding="8dp"
+                android:background="@drawable/bg_glass_button"
+                android:layout_marginStart="12dp"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/btnSettings"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_settings_small"
+                app:tint="@color/white"
+                android:padding="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_glass_button"
+                android:backgroundTint="#80000000"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+        <!-- Instruction Text -->
+        <TextView
+            android:id="@+id/tvInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/step_1_instruction"
+            android:textColor="@color/brand_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Result Display -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_distance"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvResultDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- m"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="#55FFFFFF"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_height"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvResultHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- m"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Main Action Button -->
+        <Button
+            android:id="@+id/btnAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_glass_button"
+            android:text="@string/btn_record_bottom"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+        
+        <TextView
+            android:id="@+id/btnReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_reset"
+            android:textColor="#AAAAAA"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,139 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 1. Dark Hardware Accessories (Back Layer) -->
+    <!-- Left Grip -->
+    <path
+        android:fillColor="#102027"
+        android:pathData="M 5,20 H 15 V 50 H 5 a 3,3 0 0 1 -3,-3 V 23 a 3,3 0 0 1 3,-3 Z" />
+    <path
+        android:fillColor="#102027"
+        android:pathData="M 12,55 H 15 V 75 H 12 a 3,3 0 0 1 -3,-3 V 58 a 3,3 0 0 1 3,-3 Z" />
+    
+    <!-- Top Buttons -->
+    <path
+        android:fillColor="#102027"
+        android:pathData="M 30,5 H 45 V 15 H 30 Z" />
+    <path
+        android:fillColor="#102027"
+        android:pathData="M 50,5 H 70 V 15 H 50 Z" />
+
+    <!-- Bottom Stand -->
+    <path
+        android:fillColor="#102027"
+        android:pathData="M 35,95 H 65 V 85 H 35 Z" />
+
+    <!-- 2. Main Body Chassis -->
+    <group>
+        <!-- White Body with Cyan Border -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:strokeColor="#29B6F6"
+            android:strokeWidth="5"
+            android:pathData="M 20,15 H 85 A 10,10 0 0 1 95,25 V 80 A 10,10 0 0 1 85,90 H 20 A 10,10 0 0 1 10,80 V 25 A 10,10 0 0 1 20,15 Z" />
+    </group>
+
+    <!-- 3. Upper Left Icon (Timer/Clock) -->
+    <group>
+        <path
+            android:strokeColor="#1565C0"
+            android:strokeWidth="2"
+            android:pathData="M 38,25 m -5,0 a 5,5 0 1,1 10,0 a 5,5 0 1,1 -10,0" />
+        <path
+            android:fillColor="#1565C0"
+            android:pathData="M 38,25 V 22 H 41 V 25 Z" /> <!-- Simplified Quarter -->
+    </group>
+
+    <!-- 4. Ruler Scale (Left Side) -->
+    <path
+        android:strokeColor="#37474F"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M 25,20 V 85" />
+    <!-- Ticks -->
+    <path
+        android:strokeColor="#455A64"
+        android:strokeWidth="1"
+        android:pathData="
+            M 25,22 h 6 M 25,25 h 3 M 25,28 h 4 M 25,31 h 3 M 25,34 h 4 M 25,37 h 3
+            M 25,40 h 6 M 25,43 h 3 M 25,46 h 7 M 25,49 h 3 M 25,52 h 5 M 25,55 h 3
+            M 25,58 h 6 M 25,61 h 3 M 25,64 h 4 M 25,67 h 3 M 25,70 h 6 M 25,73 h 3
+            M 25,76 h 5 M 25,79 h 3 M 25,82 h 6
+        " />
+
+    <!-- 5. Central Radar Screen -->
+    <group>
+        <!-- Screen Background (Dark Blue Circle) -->
+        <path
+            android:fillColor="#0D47A1"
+            android:pathData="M 60,52 m -28,0 a 28,28 0 1,1 56,0 a 28,28 0 1,1 -56,0" />
+
+        <!-- Grid Lines (Clipped manually to fit circle rough area visually, or just drawn) -->
+        <!-- Perspective floor grid -->
+        <path
+            android:strokeColor="#00E5FF"
+            android:strokeWidth="0.5"
+            android:strokeAlpha="0.5"
+            android:pathData="
+                M 32,52 H 88
+                M 34,60 H 86
+                M 38,68 H 82
+                M 44,75 H 76
+                M 60,52 V 80
+                M 50,52 L 40,78
+                M 70,52 L 80,78
+                M 60,24 V 52
+                M 50,52 L 50,30
+                M 70,52 L 70,30
+                M 34,44 H 86
+                M 38,36 H 82
+            " />
+    </group>
+
+    <!-- 6. HUD / Crosshair (Glowing Cyan) -->
+    <group>
+        <!-- Center Ring -->
+        <path
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="2"
+            android:pathData="M 60,52 m -5,0 a 5,5 0 1,1 10,0 a 5,5 0 1,1 -10,0" />
+        
+        <!-- Cross lines -->
+        <path
+            android:strokeColor="#00E5FF"
+            android:strokeWidth="2"
+            android:strokeLineCap="square"
+            android:pathData="
+                M 60,32 V 47
+                M 60,57 V 72
+                M 40,52 H 55
+                M 65,52 H 80
+            " />
+            
+        <!-- Tick marks on crosshair ends -->
+        <path
+            android:strokeColor="#00E5FF"
+            android:strokeWidth="2"
+            android:pathData="
+                M 59,32 h 2
+                M 59,72 h 2
+                M 40,51 v 2
+                M 80,51 v 2
+            " />
+    </group>
+
+    <!-- 7. Laser Beam (Red) -->
+    <path
+        android:strokeColor="#FF1744"
+        android:strokeWidth="1.5"
+        android:pathData="M 60,52 L 5,65" />
+    <!-- Impact Dot -->
+    <path
+        android:fillColor="#FF1744"
+        android:pathData="M 5,65 m -1.5,0 a 1.5,1.5 0 1,1 3,0 a 1.5,1.5 0 1,1 -3,0" />
+
+</vector>

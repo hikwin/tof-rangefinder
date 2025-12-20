@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/brand_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="@color/brand_surface">
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/title_history"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
+            
+        <ImageView
+            android:id="@+id/btnUnit"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_unit"
+            android:padding="4dp"
+            app:tint="@color/text_primary"
+            android:layout_marginEnd="16dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto"/>
+
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_delete"
+            android:padding="4dp"
+            app:tint="@color/text_primary"
+            xmlns:app="http://schemas.android.com/apk/res-auto"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:clipToPadding="false" />
+
+</LinearLayout>

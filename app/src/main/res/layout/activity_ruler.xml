@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/brand_background">
+
+    <win.hik.tofchizi.RulerView
+        android:id="@+id/rulerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true" />
+        
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ruler_guide_text"
+        android:textColor="@color/text_secondary"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:rotation="90"/>
+
+    <Button
+        android:id="@+id/btnCalibrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_calibrate"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp" />
+
+    <Button
+        android:id="@+id/btnSaveCalibrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_save"
+        android:visibility="gone"
+        android:layout_below="@id/btnCalibrate"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp" />
+        
+</RelativeLayout>

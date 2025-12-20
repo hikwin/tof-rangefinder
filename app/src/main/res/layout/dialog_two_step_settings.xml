@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_crosshair_style"
+        android:textColor="@color/brand_primary"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgCrosshairStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbStyleIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/style_icon_only"
+            android:textColor="?android:attr/textColorPrimary"/>
+
+        <RadioButton
+            android:id="@+id/rbStyleLines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/style_lines_only"
+            android:textColor="?android:attr/textColorPrimary"/>
+
+        <RadioButton
+            android:id="@+id/rbStyleBoth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/style_both"
+            android:textColor="?android:attr/textColorPrimary"/>
+
+        <RadioButton
+            android:id="@+id/rbStyleSniper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/style_sniper"
+            android:textColor="?android:attr/textColorPrimary"/>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_guide_line_color"
+        android:textColor="@color/brand_primary"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Simple Color Buttons Row -->
+    <LinearLayout
+        android:id="@+id/layoutColors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        
+        <!-- White (Default) -->
+        <FrameLayout android:tag="0" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginEnd="12dp" android:background="@drawable/bg_color_option_border">
+            <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FFFFFF" android:layout_margin="1dp"/>
+        </FrameLayout>
+        <!-- Red -->
+        <FrameLayout android:tag="1" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginEnd="12dp" android:background="@drawable/bg_color_option_border">
+            <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FF4444" android:layout_margin="1dp"/>
+        </FrameLayout>
+        <!-- Green -->
+        <FrameLayout android:tag="2" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginEnd="12dp" android:background="@drawable/bg_color_option_border">
+            <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="#44FF44" android:layout_margin="1dp"/>
+        </FrameLayout>
+        <!-- Blue -->
+        <FrameLayout android:tag="3" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginEnd="12dp" android:background="@drawable/bg_color_option_border">
+            <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="#4444FF" android:layout_margin="1dp"/>
+        </FrameLayout>
+        <!-- Yellow -->
+        <FrameLayout android:tag="4" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginEnd="12dp" android:background="@drawable/bg_color_option_border">
+            <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FFFF44" android:layout_margin="1dp"/>
+        </FrameLayout>
+        <!-- Cyan -->
+        <FrameLayout android:tag="5" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginEnd="12dp" android:background="@drawable/bg_color_option_border">
+            <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="#44FFFF" android:layout_margin="1dp"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

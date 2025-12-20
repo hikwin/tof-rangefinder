@@ -1,0 +1,250 @@
+<resources>
+    <string name="app_name">ToF Rangefinder</string>
+    <string name="error_no_camera">Camera unavailable</string>
+    <string name="error_permission">Camera permission required</string>
+    <string name="error_tof_unsupport">Device does not support ToF sensor</string>
+    <string name="error_invalid_data">Invalid Data</string>
+    <string name="error_out_of_range">Out of Range</string>
+    <string name="status_initializing">Initializing…</string>
+    <string name="home_title">ToF Rangefinder</string>
+    <string name="mode_tof">ToF Sensor</string>
+    <string name="mode_start">Start</string>
+    <string name="status_no_data">No data or sensor not recognized</string>
+    <string name="mode_select_sensors">Available Sensors (Multi-select allowed, auto-match if none selected):</string>
+    <string name="compass_heading">Heading</string>
+    <string name="crosshair_color_label">Crosshair Color</string>
+    <string name="title_toolbox">Toolbox</string>
+    <string name="color_red">Red</string>
+    <string name="color_green">Green</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_white">White</string>
+    <string name="home_intro_body"><![CDATA[
+        <br>
+        <h3>1. Introduction</h3>
+        <p>Uses infrared or laser pulse sensors to calculate the Time of Flight (ToF) of photons reflected back to measure distance. No ARCore support needed, but ensure your device has the sensor. Some objects (black absorbing objects, transparent glass) may not reflect signals accurately.</p>
+        <p>Range &amp; Accuracy: Depends on phone hardware. Some may be limited to &#60;80cm or &#62;3m. Units are generally in millimeters.</p>
+        <br>
+
+        <h3>2. User Guide</h3>
+        <ul>
+            <li><b>Crosshair:</b> The center crosshair marks the measurement point. Long press to drag it to align with specific objects.</li><br>
+            <li><b>Lock:</b> Tap the lock icon to freeze interaction and prevent accidental movement.</li><br>
+            <li><b>Pause/Resume:</b> Tap the pause button to freeze the current reading. Distance, angle, and time are automatically saved to history.</li><br>
+            <li><b>Timer:</b> Tap the timer icon (top-left) to set a delay. Useful for selfies or measuring wall distance when you can\'t see the screen. Auto-pauses and saves data when time is up.</li>
+        </ul>
+        <br>
+
+        <h3>3. Data &amp; Export</h3>
+        <ul>
+            <li><b>History:</b> Records are saved automatically on pause (can be set to manual). Includes distance, V/H angles, and compass heading. Long press to delete, tap to add notes.</li><br>
+            <li><b>Units:</b> Tap the ruler icon in history to switch between mm/cm/m.</li><br>
+            <li><b>Export:</b> In settings, export records as Excel (.xlsx), CSV, or Markdown, or share directly to other apps.</li>
+        </ul>
+        <br>
+
+        <h3>4. Tools</h3>
+        <p>Access the Toolbox from the menu to use various sensor-based tools: Distance, Angle, Level, Compass, Altitude, Barometer, Decibel Meter, Light Meter, etc. More features coming soon.</p>
+        <br>
+
+        <h3>5. About</h3>
+        <p>This app utilizes phone sensors to provide convenient depth measurement tools. Open source and free for offline use.</p>
+        <p>Github: <a href="https://github.com/hikwin/ToFRangefinder">https://github.com/hikwin/ToFRangefinder</a></p>
+        <p>License: Apache License 2.0</p>
+        <br>
+    ]]></string>
+
+    <!-- New Strings for UI -->
+    <string name="mode_select_candidates_title">Available Sensors</string>
+    <string name="mode_select_candidates_hint">(Multi-select allowed, auto-match if none selected)</string>
+    <string name="mode_select_btn_start">Start Measure</string>
+
+    <!-- Two Step Measurement -->
+    <string name="tool_two_step_title">Two-Step Measure (Dist &amp; Height)</string>
+    <string name="label_camera_height">Camera Height</string>
+    <string name="step_1_instruction">Step 1: Aim at bottom\n(Ground contact point)</string>
+    <string name="step_2_instruction">Step 2: Aim at top</string>
+    <string name="step_done_instruction">Measurement Done</string>
+    <string name="btn_record_bottom">Record Bottom</string>
+    <string name="btn_record_top">Record Top</string>
+    <string name="btn_reset">Reset</string>
+    <string name="label_distance">Horiz. Dist</string>
+    <string name="label_height">Height</string>
+
+    <!-- Eye Height Calculator -->
+    <string name="eye_height_btn">Use Eye Height</string>
+    <string name="eye_calc_title">Eye Height Calculator</string>
+    <string name="eye_calc_desc">Calc: Estimate eye height based on body height. Use "Quick Input" to auto-fill.\n\nMeasure: Stand straight, hold phone at eye level.\n\nTheory: Uses trigonometry. Accuracy depends on holding position. Good for rough estimation.</string>
+    <string name="eye_calc_gender_male">Male</string>
+    <string name="eye_calc_gender_female">Female</string>
+    <string name="eye_calc_height_hint">Height (cm)</string>
+    <string name="eye_calc_shoe_std">Standard Shoe (36mm)</string>
+    <string name="eye_calc_shoe_custom">Custom Shoe</string>
+    <string name="eye_calc_shoe_hint">Heel Height (mm)</string>
+    <string name="btn_calc">Calculate</string>
+    <string name="btn_quick_input">Quick Input</string>
+    <string name="calc_result_format">Result: %.1f cm</string>
+
+    <!-- Lightning Distance Tool -->
+    <string name="tool_lightning_title">Lightning Distance</string>
+    <string name="label_light_sensor">Brightness (Lux)</string>
+    <string name="label_sound_sensor">Noise (dB)</string>
+    <string name="label_lightning_distance">Lightning Distance</string>
+    <string name="label_time_gap">Time Gap: -- ms</string>
+    <string name="btn_start_monitor">Start Monitor</string>
+    <string name="btn_stop_monitor">Stop Monitor</string>
+    <string name="error_no_mic_permission">Mic permission needed for thunder detection</string>
+    <string name="msg_monitoring_started">Monitoring started, waiting for flash and thunder...</string>
+    <string name="msg_monitoring_stopped">Monitoring stopped</string>
+    <string name="msg_calc_success">Calculation Success</string>
+    <string name="error_calc_failed">No distinct lightning or thunder detected</string>
+    <string name="lightning_help_title">Lightning Distance Theory</string>
+    <string name="lightning_help_content">Theory: Uses the speed difference between light and sound. Light arrives instantly, sound travels at ~340m/s. The time gap determines distance.\n\nUsage: Start monitoring during a storm. Stop after the first flash and thunder. Can also be used as a simple light/sound meter.</string>
+    <string name="noise_level_0">Very Quiet</string>
+    <string name="noise_level_1">Quiet</string>
+    <string name="noise_level_2">Normal</string>
+    <string name="noise_level_3">Noisy</string>
+    <string name="noise_level_4">Very Noisy</string>
+    <string name="noise_level_5">Ear Damage Risk</string>
+    <string name="title_settings_crosshair">Two-Step Settings</string>
+    <string name="label_crosshair_style">Crosshair Style</string>
+    <string name="style_icon_only">Icon Only (Default)</string>
+    <string name="style_lines_only">Lines Only</string>
+    <string name="style_both">Icon + Lines</string>
+    <string name="style_sniper">Sniper Scope</string>
+    <string name="label_guide_line_color">Guide Line Color</string>
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="pref_language">Language</string>
+    <string name="pref_language_auto">Auto</string>
+    <string name="pref_language_zh">简体中文</string>
+    <string name="pref_language_en">English</string>
+
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_theme">Color Theme</string>
+    <string name="settings_measure">Measurement</string>
+    <string name="settings_save_mode">Save Mode</string>
+    <string name="settings_auto">Auto</string>
+    <string name="settings_manual">Manual</string>
+    <string name="settings_history_limit">History Limit</string>
+    <string name="hint_history_limit">Default 200, 0 for unlimited</string>
+    <string name="btn_save">Save</string>
+    <string name="settings_data_mgmt">Data Management</string>
+    <string name="btn_export">Export Data</string>
+    <string name="btn_share">Share Data</string>
+    <string name="btn_clear">Clear All</string>
+    <string name="settings_backup_restore">Backup &amp; Restore</string>
+    <string name="btn_backup">Backup</string>
+    <string name="btn_restore">Restore</string>
+    <string name="msg_save_success">Settings saved</string>
+    <string name="error_invalid_number">Invalid number</string>
+    <string name="msg_records_cleared">Records cleared</string>
+    <string name="msg_export_success">Export success</string>
+    <string name="msg_export_fail">Export failed: %s</string>
+    <string name="msg_share_fail">Share failed: %s</string>
+    <string name="msg_import_success">Imported %d records</string>
+    <string name="msg_import_fail">Import failed: Format error or corrupted file</string>
+    <string name="dialog_clear_title">Warning</string>
+    <string name="dialog_clear_msg">Are you sure you want to clear all records? This cannot be undone!</string>
+    <string name="btn_confirm_clear">Clear</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="theme_follow_system">System Default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="title_share">Share Records</string>
+    <string name="title_history">History</string>
+    <string name="title_help">Help &amp; Info</string>
+    <string name="menu_tools">Toolbox</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_settings">Settings</string>
+    <string name="dialog_countdown_title">Set Timer (s)</string>
+    <string name="label_seconds">Seconds</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="dialog_note_title">Enter Note</string>
+    <string name="msg_record_saved">Record saved</string>
+    <string name="btn_close">Close</string>
+    <string name="msg_invalid_data_save">Invalid data, cannot save</string>
+    
+    <!-- Tools -->
+    <string name="tool_ruler">Ruler</string>
+    <string name="tool_protractor">Protractor</string>
+    <string name="tool_level">Level</string>
+    <string name="tool_compass">Compass</string>
+    <string name="tool_altitude">Altitude</string>
+    <string name="tool_frame_alignment">Frame Aligner</string>
+    <string name="tool_two_step">Two-Step Measure</string>
+    <string name="tool_lightning">Lightning Distance</string>
+    <string name="msg_opening_tool">Opening: %s</string>
+
+    <!-- History -->
+    <string name="msg_long_press_delete">Long press to delete records</string>
+    <string name="dialog_delete_title">Confirm Delete</string>
+    <string name="dialog_delete_msg">Delete %d selected records?</string>
+    <string name="btn_delete">Delete</string>
+    <string name="dialog_edit_note_title">Edit Note</string>
+    <string name="unit_mm">Millimeter (mm)</string>
+    <string name="unit_cm">Centimeter (cm)</string>
+    <string name="unit_m">Meter (m)</string>
+
+    <!-- Export -->
+    <string name="export_md">Markdown (.md)</string>
+    <string name="export_csv">CSV (.csv)</string>
+    <string name="export_xlsx">Excel (.xlsx)</string>
+    <string name="ruler_calib_card">Card (85.60mm)</string>
+    <string name="ruler_calib_ruler">Standard Ruler (50mm)</string>
+    <string name="ruler_calib_reset">Reset to Default</string>
+    <string name="ruler_calib_title">Select Calibration Reference</string>
+    <string name="ruler_calib_msg_card">Align red line to card edge</string>
+    <string name="ruler_calib_msg_ruler">Align red line to 5cm mark</string>
+    <string name="ruler_msg_reset_success">Reset to default success</string>
+    <string name="ruler_msg_saved">Calibration saved</string>
+    <string name="ruler_guide_text">Align object to the left line on screen</string>
+    <string name="btn_calibrate">Calibrate</string>
+    <!-- Level Tool -->
+    <string name="title_level">Level</string>
+    <string name="level_mode_flat">Flat</string>
+    <string name="level_mode_side">Side</string>
+    <string name="level_mode_face">Face</string>
+    <string name="level_btn_delay">Delay Start (5s)</string>
+
+    <!-- Compass Tool -->
+    <string name="title_compass">Compass</string>
+    <string name="compass_init_text">0° N</string>
+    <string name="compass_field_fmt">Field: %d µT</string>
+    <string name="compass_n">N</string>
+    <string name="compass_ne">NE</string>
+    <string name="compass_e">E</string>
+    <string name="compass_se">SE</string>
+    <string name="compass_s">S</string>
+    <string name="compass_sw">SW</string>
+    <string name="compass_w">W</string>
+    <string name="compass_nw">NW</string>
+
+
+    <!-- Altitude Tool -->
+    <string name="title_altitude">Altitude &amp; Pressure</string>
+    <string name="alt_label_baro">Barometric Alt</string>
+    <string name="alt_label_gps">GPS Alt &amp; Coord</string>
+    <string name="alt_permission_btn">Get Location Permission</string>
+    <string name="alt_label_boiling">Est. Boiling Point</string>
+    <string name="alt_toast_permission">GPS permission needed for altitude</string>
+
+    <!-- Frame Alignment Tool -->
+    <string name="frame_guide_text">Hold phone parallel to wall\nAlign crosshair with frame corners\nFor when level tool can\'t fit</string>
+    <string name="frame_toast_permission">Camera permission needed</string>
+    <string name="status_no_sensor">No Sensor</string>
+    <string name="status_not_supported">Not Supported</string>
+    <string name="error_gps">GPS Error: %s</string>
+    <string name="level_status_ready">Ready...</string>
+    <string name="level_status_countdown">Countdown: %d</string>
+    <string name="level_btn_retry">Retry</string>
+    <string name="level_msg_done">Measurement Done!</string>
+    <string name="level_instr_bottom">Place charging port side on surface</string>
+    <string name="level_instr_tilt">Tilt phone slightly</string>
+    <string name="level_instr_left">Place left side on surface</string>
+    <string name="protractor_toast_permission">Camera permission needed for preview</string>
+    <string name="two_step_msg_height_set">Camera height set. Hold phone at eye level to measure.</string>
+    <string name="two_step_msg_height_invalid">Please enter a valid height</string>
+    <string name="two_step_msg_calc_first">Please calculate first</string>
+</resources>

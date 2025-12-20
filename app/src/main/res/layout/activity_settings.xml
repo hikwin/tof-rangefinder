@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/brand_background"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pref_language"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
+
+        <Spinner
+            android:id="@+id/spinnerLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="140dp"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_appearance"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/settings_theme"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+        <Spinner
+            android:id="@+id/spinnerTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_measure"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/settings_save_mode"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+        <RadioGroup
+            android:id="@+id/rgSaveMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbAutoSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_auto"
+                android:textColor="@color/text_primary" />
+
+            <RadioButton
+                android:id="@+id/rbManualSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_manual"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/text_primary" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_history_limit"
+        android:textSize="16sp"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <EditText
+            android:id="@+id/etHistoryLimit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:hint="@string/hint_history_limit"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
+
+        <Button
+            android:id="@+id/btnSaveLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_save"
+            android:layout_marginStart="16dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_data_mgmt"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnExportMulti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_export"
+        android:layout_marginBottom="2dp" />
+
+    <Button
+        android:id="@+id/btnShareMulti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_share"
+        android:layout_marginBottom="2dp" />
+
+    <Button
+        android:id="@+id/btnClearAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_clear"
+        android:backgroundTint="#D32F2F"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_backup_restore"
+        android:textSize="16sp"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnBackup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_backup"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnRestore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_restore"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+</LinearLayout>
