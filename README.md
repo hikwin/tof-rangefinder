@@ -2,6 +2,12 @@
 
 简洁实用的手机测量工具集。核心功能基于 **Time-of-Flight (ToF)** 传感器提供快速、直观的距离测量，不依赖庞大的AR组件。同时内置多款实用生活测量工具。
 
+## 📸 应用截图
+<div align="center">
+  <img src="screenshots/app_preview_1.jpg" width="30%" />
+  <img src="screenshots/app_preview_2.jpg" width="30%" />
+</div>
+
 ## 🎯 核心功能：ToF 测距
 直接调用手机的激光对焦/ToF传感器获取原始距离数据，适合快速测量短距离物体（如身高、家具尺寸、间距等）。
 
