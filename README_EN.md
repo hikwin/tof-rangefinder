@@ -31,6 +31,10 @@ In addition to ToF ranging, you can quickly switch to various life measurement g
   Minimalist compass, fusing accelerometer and magnetometer data to accurately display real-time azimuth and magnetic field strength.
 - **🏔️ Altimeter**
   Dual-mode measurement: Supports barometric sensor for relative altitude (including boiling point estimation), or GPS for absolute altitude and coordinates.
+- **🎈 Airtightness Check**
+  Uses the barometric pressure sensor to monitor internal phone pressure changes, helping to check the device's water seal performance.
+- **📡 NFC Reader/Writer**
+  Supports reading and writing NFC tags (NDEF format), encompassing text, URLs, app launching, WiFi/Bluetooth pairing, contacts, and location data.
 
 ## 📲 Usage Instructions
 1. **Hardware Requirements**: ToF ranging requires phone hardware support for ToF / Laser AF sensors. Other tools mainly rely on the accelerometer, magnetometer, and microphone.
