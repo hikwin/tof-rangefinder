@@ -11,8 +11,8 @@ android {
         applicationId = "win.hik.tofchizi"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 3
+        versionName = "1.1.0"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -64,4 +64,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.dhatim:fastexcel:0.17.0")
+    implementation("com.google.zxing:core:3.5.3")
 }

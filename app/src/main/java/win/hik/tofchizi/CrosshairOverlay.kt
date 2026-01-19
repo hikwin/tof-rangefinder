@@ -163,13 +163,14 @@ class CrosshairOverlay @JvmOverloads constructor(
         }
         val angleText = String.format("V:%.1f°  H:%.1f°", pitchDeg, yawDeg)
         val fm2 = anglePaint.fontMetrics
+        val lineHeight = fm2.descent - fm2.ascent + dp10 / 2 // Add some spacing
         val topY = dp10 - fm2.ascent
+        
         canvas.drawText(angleText, dp10, topY, anglePaint)
+        
         if (compassText.isNotEmpty()) {
-            val fm3 = compassPaint.fontMetrics
-            val ty2 = dp10 - fm3.ascent
-            val tw = compassPaint.measureText(compassText)
-            canvas.drawText(compassText, width - dp10 - tw, ty2, compassPaint)
+            // Draw below angle text, aligned left
+            canvas.drawText(compassText, dp10, topY + lineHeight, compassPaint)
         }
     }
 }

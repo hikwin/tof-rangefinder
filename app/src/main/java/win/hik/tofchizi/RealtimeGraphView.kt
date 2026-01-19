@@ -30,8 +30,15 @@ class RealtimeGraphView @JvmOverloads constructor(
             invalidate()
         }
         
+    var lockToMaxRange: Boolean = false
+    private var globalMin = Float.MAX_VALUE
+    private var globalMax = Float.MIN_VALUE
+
     fun addDataPoint(value: Float) {
         dataPoints.add(value)
+        if (value > globalMax) globalMax = value
+        if (value < globalMin) globalMin = value
+        
         if (dataPoints.size > maxPoints) {
             dataPoints.removeFirst()
         }
@@ -40,8 +47,20 @@ class RealtimeGraphView @JvmOverloads constructor(
     
     fun clear() {
         dataPoints.clear()
+        globalMin = Float.MAX_VALUE
+        globalMax = Float.MIN_VALUE
         invalidate()
     }
+
+    var showYAxis = false
+    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.GRAY
+        textSize = 30f
+        textAlign = Paint.Align.RIGHT
+    }
+    
+    // Add margin for labels if enabled
+    private val Y_AXIS_WIDTH = 100f 
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -52,8 +71,16 @@ class RealtimeGraphView @JvmOverloads constructor(
         val height = height.toFloat()
         
         // Auto scale Y
-        var min = dataPoints.minOrNull() ?: 0f
-        var max = dataPoints.maxOrNull() ?: 1f
+        var min: Float
+        var max: Float
+        
+        if (lockToMaxRange && globalMax > globalMin) {
+            min = globalMin
+            max = globalMax
+        } else {
+            min = dataPoints.minOrNull() ?: 0f
+            max = dataPoints.maxOrNull() ?: 1f
+        }
         
         if (max == min) {
             max = min + 1f
@@ -61,16 +88,28 @@ class RealtimeGraphView @JvmOverloads constructor(
         }
         
         val range = max - min
-        val dx = width / (maxPoints - 1)
         
+        // Adjust drawing area
+        val startX = if (showYAxis) Y_AXIS_WIDTH else 0f
+        val drawWidth = width - startX
+        
+        val dx = drawWidth / (maxPoints - 1)
+        
+        // Draw Axis Labels
+        if (showYAxis) {
+            val labelX = Y_AXIS_WIDTH - 10f
+            // Top (Max)
+            canvas.drawText(String.format("%.1f", max), labelX, 40f, textPaint)
+            // Middle
+            canvas.drawText(String.format("%.1f", (max+min)/2), labelX, height/2, textPaint)
+            // Bottom (Min)
+            canvas.drawText(String.format("%.1f", min), labelX, height - 10f, textPaint)
+            
+            // Vertical Line
+            canvas.drawLine(startX, 0f, startX, height, textPaint)
+        }
+
         path.reset()
-        
-        // We want new points to appear on the right. 
-        // If we have fewer than maxPoints, start from left?
-        // Or always draw latest at right?
-        // Let's draw 0 to size-1.
-        
-        // Calculate points
         
         for (i in dataPoints.indices) {
             val value = dataPoints[i]
@@ -78,7 +117,7 @@ class RealtimeGraphView @JvmOverloads constructor(
             val normalized = (value - min) / range
             // Flip Y (canvas Y is 0 at top)
             val y = height - (normalized * height)
-            val x = i * dx
+            val x = startX + i * dx
             
             if (i == 0) {
                 path.moveTo(x, y)

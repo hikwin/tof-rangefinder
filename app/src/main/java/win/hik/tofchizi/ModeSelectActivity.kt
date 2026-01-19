@@ -24,6 +24,8 @@ class ModeSelectActivity : BaseActivity() {
     private var selectedColor: Int = android.graphics.Color.RED
     private val prefs by lazy { getSharedPreferences("tof_prefs", MODE_PRIVATE) }
 
+    private lateinit var gestureDetector: android.view.GestureDetector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val p = getSharedPreferences("tof_prefs", MODE_PRIVATE)
         val mode = p.getInt("app_theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -36,6 +38,39 @@ class ModeSelectActivity : BaseActivity() {
         
         setupCrosshairSpinner()
         populateCandidates()
+
+        gestureDetector = android.view.GestureDetector(this, object : android.view.GestureDetector.SimpleOnGestureListener() {
+            override fun onFling(e1: android.view.MotionEvent?, e2: android.view.MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                if (e1 == null) return false
+                val diffY = e2.y - e1.y
+                val diffX = e2.x - e1.x
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > 100 && Math.abs(velocityX) > 100) {
+                        // Swipe Left or Right -> Open Tools
+                        startActivity(Intent(this@ModeSelectActivity, ToolsActivity::class.java))
+                        
+                        // Set animation based on direction
+                        if (diffX < 0) {
+                             if (android.os.Build.VERSION.SDK_INT >= 34) {
+                                 overrideActivityTransition(androidx.appcompat.app.AppCompatActivity.OVERRIDE_TRANSITION_OPEN, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                             } else {
+                                 @Suppress("DEPRECATION")
+                                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                             }
+                        } else {
+                             if (android.os.Build.VERSION.SDK_INT >= 34) {
+                                 overrideActivityTransition(androidx.appcompat.app.AppCompatActivity.OVERRIDE_TRANSITION_OPEN, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                             } else {
+                                 @Suppress("DEPRECATION")
+                                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                             }
+                        }
+                        return true
+                    }
+                }
+                return false
+            }
+        })
         
         binding.btnStart.setOnClickListener {
             val i = Intent(this, MainActivity::class.java)
@@ -86,6 +121,13 @@ class ModeSelectActivity : BaseActivity() {
         binding.btnHistory.setOnClickListener {
             startActivity(Intent(this, HistoryActivity::class.java))
         }
+    }
+
+    override fun dispatchTouchEvent(ev: android.view.MotionEvent?): Boolean {
+        if (ev != null) {
+            gestureDetector.onTouchEvent(ev)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun populateCandidates() {

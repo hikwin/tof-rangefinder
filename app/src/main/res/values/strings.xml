@@ -28,11 +28,13 @@
         <br>
 
         <h3>2. 操作指南</h3>
+        <p>在软件首页用手势向左或向右滑动可直接打开工具箱。点击“开始测量”进入ToF测距，以下是测距页相关说明：</p><br>
         <ul>
             <li><b>准星 (Crosshair)：</b>屏幕中心的十字准星代表测量点。长按准星可拖动位置，方便对准特定物体。</li><br>
             <li><b>锁定 (Lock)：</b>点击锁形图标，锁定界面交互。防止误触移动准星。</li><br>
             <li><b>暂停/恢复 (Pause/Resume)：</b>点击暂停按钮，锁定当前读数。此时会自动将距离、角度、时间保存到历史记录。</li><br>
-            <li><b>倒计时 (Timer)：</b>点击左上角计时图标，设置延迟秒数。适用于自拍测身高、测墙距等无法直视屏幕的场景。倒计时结束后自动暂停并保存数据。</li>
+            <li><b>倒计时 (Timer)：</b>点击左上角计时图标，设置延迟秒数。适用于自拍测身高、测墙距等无法直视屏幕的场景。倒计时结束后自动暂停并保存数据。</li><br>
+            <li><b>测距设置 (Settings)：</b>点击右上角齿轮图标，打开实时测量设置。可调整数据刷新延迟（数值跳动过快时可调大延迟）以及切换主界面的显示单位（毫米/厘米/米）。</li>
         </ul>
         <br>
 
@@ -45,7 +47,7 @@
         <br>
 
         <h3>4. 工具说明</h3>
-        <p>菜单中点击工具即可打开工具箱，利用手机传感器获取实现各种测量，目前可以测量距离、角度、水平、方向、高度、气压、声音分贝、光照等。后续可能会继续更新与增加其它功能。</p>
+        <p>菜单中点击工具即可打开工具箱，利用手机传感器获取实现各种测量，目前可以测量距离、角度、水平、方向、高度、气压、声音分贝、光照、气密性、NFC读写等。后续可能会继续更新与增加其它功能。</p>
         <br>
 
         <h3>5. 关于</h3>
@@ -247,4 +249,132 @@
     <string name="two_step_msg_height_set">已填入相机高度，请将手机举至与眼平齐进行测量</string>
     <string name="two_step_msg_height_invalid">请输入有效身高</string>
     <string name="two_step_msg_calc_first">请先计算结果</string>
+
+    <!-- Airtightness Tool -->
+    <string name="tool_pressure">气密性</string>
+    <string name="airtight_start">开始监测</string>
+    <string name="airtight_stop">停止</string>
+    <string name="airtight_current">当前气压: %.2f hPa</string>
+    <string name="airtight_max">最大值: %.2f</string>
+    <string name="airtight_min">最小值: %.2f</string>
+    <string name="airtight_range">极差: %.2f</string>
+    <string name="airtight_title">气密性检测</string>
+    <string name="airtight_desc_principle">原理说明：\n大多数防水手机通过气压传感器检测内部气压。尝试用力按压屏幕（注意力度，不要损坏屏幕），如果气密性良好，内部气压会随按压瞬间升高；如果气密性受损，气压变化可能不明显或迅速回落。</string>
+
+    <!-- Realtime Settings -->
+    <string name="title_realtime_settings">实时测量设置</string>
+    <string name="label_refresh_delay">刷新延迟: %d ms</string>
+    <string name="label_display_unit">显示单位:</string>
+    <string name="unit_label_mm">毫米 (mm)</string>
+    <string name="unit_label_cm">厘米 (cm)</string>
+    <string name="unit_label_m">米 (m)</string>
+    <!-- NFC Tool -->
+    <string name="tool_nfc_title">NFC读写</string>
+    <string name="nfc_read_title">读取内容</string>
+    <string name="nfc_status_waiting">请将支持NFC的设备或标签贴近手机背面...</string>
+    <string name="nfc_read_content_hint">读取到的文本内容</string>
+    <string name="nfc_write_title">写入内容</string>
+    <string name="nfc_write_hint">输入要写入的文本</string>
+    <string name="nfc_btn_write">写入标签</string>
+    <string name="nfc_write_instruction">点击“写入标签”后，请将标签贴近手机背面即可写入。</string>
+    <string name="nfc_status_write_mode">准备写入... 请靠近标签</string>
+    <string name="nfc_msg_write_success">写入成功！</string>
+    <string name="nfc_msg_write_fail">写入失败，请重试</string>
+    <string name="nfc_msg_read_error">读取失败</string>
+    <string name="nfc_msg_not_supported">此设备不支持NFC</string>
+    <string name="nfc_msg_disabled">NFC未开启，请先在设置中开启NFC</string>
+    <string name="btn_copy">复制内容</string>
+    <string name="btn_clone">写入新卡</string>
+    <string name="msg_copied">已复制到剪贴板</string>
+    <string name="nfc_msg_clone_ready">准备复制... 请将新空白标签靠近手机</string>
+    <string name="nfc_msg_write_empty">无可写入数据，请先读取标签</string>
+    
+    <!-- NFC Types -->
+    <string-array name="nfc_write_types">
+        <item>纯文本 (Text)</item>
+        <item>网址 (URL)</item>
+        <item>电话 (Phone)</item>
+        <item>启动应用 (App)</item>
+        <item>WiFi连接</item>
+        <item>蓝牙连接 (Bluetooth)</item>
+        <item>联系人 (Contact)</item>
+        <item>地理位置 (Location)</item>
+    </string-array>
+    
+    <string name="nfc_hint_text">输入文本内容</string>
+    <string name="nfc_hint_url">输入网址 (http://...)</string>
+    <string name="nfc_hint_phone">输入电话号码</string>
+    <string name="nfc_label_app">应用程序</string>
+    <string name="nfc_btn_select_app">选择应用</string>
+    <string name="nfc_hint_wifi_ssid">WiFi 名称 (SSID)</string>
+    <string name="nfc_hint_wifi_pass">WiFi 密码</string>
+    <string name="nfc_wifi_nopass">无密码</string>
+    <string name="label_select_app">请选择要启动的应用</string>
+    <string name="hint_search_app">搜索应用名称...</string>
+    
+    <!-- New Inputs -->
+    <string name="nfc_hint_bt_mac">MAC地址 (例: 00:11:22:33:AA:BB)</string>
+    <string name="nfc_hint_contact_name">姓名</string>
+    <string name="nfc_hint_contact_phone">电话号码</string>
+    <string name="nfc_hint_contact_email">电子邮箱</string>
+    <string name="nfc_hint_loc_lat">纬度 (Latitude)</string>
+    <string name="nfc_hint_loc_lon">经度 (Longitude)</string>
+    <string name="nfc_btn_current_loc">获取位置</string>
+    <string name="title_detect_alipay">发现支付宝链接</string>
+    <string name="msg_detect_alipay">检测到内容包含支付宝加密链接，是否解码为原始链接？</string>
+    <string name="btn_decode">解码</string>
+    <string name="title_generate_qr">生成收款码</string>
+    <string name="msg_generate_qr">解析到收款链接，是否生成二维码？</string>
+    <string name="btn_generate">生成</string>
+    <string name="hint_qr_screenshot">可自行截图保存二维码，程序不涉及文件权限</string>
+    
+    <string name="nfc_security_title">安全与保护</string>
+    <string name="btn_lock_tag">永久锁定 (只读)</string>
+    <string name="btn_set_pwd">设置密码保护</string>
+    <string name="btn_remove_pwd">移除密码保护</string>
+    <string name="msg_lock_confirm">确定要将此标签永久锁定吗？此操作不可逆！锁定后标签将变为只读。\n\n确认永久锁定请输入：yes</string>
+    <string name="error_lock_confirm_fail">输入不正确，操作取消</string>
+    <string name="msg_lock_success">标签已成功锁定</string>
+    <string name="msg_lock_fail">锁定失败</string>
+    <string name="dialog_pwd_title">输入4位密码</string>
+    <string name="msg_pwd_len_err">密码可以通过必须是4个字符</string>
+    <string name="msg_pwd_success">密码设置成功</string>
+    <string name="msg_pwd_fail">密码设置失败</string>
+    <string name="msg_auth_success">验证/移除成功</string>
+    <string name="msg_auth_fail">验证/移除失败</string>
+    <string name="nfc_status_lock_mode">模式：准备锁定 (⚠️此操作不可逆！请靠近标签)</string>
+    <string name="nfc_status_pwd_mode">模式：写入密码 (请靠近标签)</string>
+    <string name="nfc_status_unpwd_mode">模式：解锁密码 (请靠近标签)</string>
+    <string name="nfc_status_waiting_write">输入内容后写入</string>
+    <string name="nfc_btn_cancel_action">取消写入或锁定操作</string>
+    <string name="nfc_btn_get_alipay_red_packet">获取支付宝碰一碰红包二维码</string>
+    <string name="title_author_red_packet_qr">作者红包二维码</string>
+    <string name="hint_author_red_packet_qr">可自行截图保存二维码，用支付宝扫描该码领取每日红包，领取红包的同时也支持了作者</string>
+
+    <!-- NFC Toast & Status Messages -->
+    <string name="msg_action_canceled">操作已取消</string>
+    <string name="msg_gen_qr_fail">生成二维码失败: %s</string>
+    <string name="msg_data_format_err">数据格式错误: %s</string>
+    <string name="msg_tag_readonly">标签只读</string>
+    <string name="msg_tag_capacity_low">标签容量不足</string>
+    <string name="msg_tag_not_writable_ndef">无法写入此标签 (不支持NDEF)</string>
+    <string name="msg_tag_empty">空标签 (Empty Tag)\n%s</string>
+    <string name="msg_tag_unavailable_info">无法获取详细信息</string>
+    <string name="msg_tag_non_ndef">非NDEF标签或不支持\n%s</string>
+    <string name="msg_read_success">读取成功</string>
+    <string name="msg_tag_writable">可写</string>
+    <string name="msg_tag_locked_readonly">锁定(只读)</string>
+    <string name="msg_tag_unformatted">未格式化(可写)</string>
+    <string name="msg_tag_readonly_non_ndef">只读/非NDEF</string>
+    <string name="msg_decode_result_header">=== 解码结果 ===</string>
+    <string name="msg_decode_original_link">原始链接 (Scheme): \n%s\n</string>
+    <string name="msg_decode_payment_code">收款/二维码链接 (codeContent): \n%s\n</string>
+    <string name="msg_decode_payment_qr">收款/二维码链接 (qrcode): \n%s\n</string>
+    <string name="msg_decode_param_fail">解析参数失败: %s\n</string>
+    <string name="search_qr_link_marker">收款/二维码链接</string>
+    
+    <string name="nfc_btn_saved_wifi">已存WiFi</string>
+    <string name="nfc_title_saved_wifi">选择已存/附近WiFi</string>
+    <string name="nfc_msg_no_wifi_permission">需要位置权限以获取WiFi列表</string>
+    <string name="nfc_msg_no_wifi_found">未找到WiFi网络</string>
 </resources>

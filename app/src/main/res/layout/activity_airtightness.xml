@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/brand_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/airtight_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="#1A000000" />
+
+    <win.hik.tofchizi.RealtimeGraphView
+        android:id="@+id/pressureGraph"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="16dp" 
+        android:background="#11000000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/airtight_desc_principle"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="16dp">
+
+        <TextView android:id="@+id/tvCurrent" android:text="@string/airtight_current" android:textSize="16sp" android:textColor="@color/text_primary" android:padding="8dp" android:layout_columnWeight="1"/>
+        <TextView android:id="@+id/tvRange" android:text="@string/airtight_range" android:textSize="16sp" android:textColor="@color/text_primary" android:padding="8dp" android:layout_columnWeight="1"/>
+        <TextView android:id="@+id/tvMax" android:text="@string/airtight_max" android:textSize="16sp" android:textColor="@color/text_primary" android:padding="8dp" android:layout_columnWeight="1"/>
+        <TextView android:id="@+id/tvMin" android:text="@string/airtight_min" android:textSize="16sp" android:textColor="@color/text_primary" android:padding="8dp" android:layout_columnWeight="1"/>
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/btnStartStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/airtight_start"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:backgroundTint="@color/brand_primary"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

@@ -28,11 +28,13 @@
         <br>
 
         <h3>2. User Guide</h3>
+        <p>Swipe left or right on the home page to quickly open the Toolbox. Tap "Start Measure" to enter ToF ranging. Below are instructions for the ranging screen:</p><br>
         <ul>
             <li><b>Crosshair:</b> The center crosshair marks the measurement point. Long press to drag it to align with specific objects.</li><br>
             <li><b>Lock:</b> Tap the lock icon to freeze interaction and prevent accidental movement.</li><br>
             <li><b>Pause/Resume:</b> Tap the pause button to freeze the current reading. Distance, angle, and time are automatically saved to history.</li><br>
-            <li><b>Timer:</b> Tap the timer icon (top-left) to set a delay. Useful for selfies or measuring wall distance when you can\'t see the screen. Auto-pauses and saves data when time is up.</li>
+            <li><b>Timer:</b> Tap the timer icon (top-left) to set a delay. Useful for selfies or measuring wall distance when you can\'t see the screen. Auto-pauses and saves data when time is up.</li><br>
+            <li><b>Measurement Settings:</b> Tap the gear icon (top-right) to open real-time settings. You can adjust the refresh delay (increase if numbers jump too fast) and switch the main display unit (mm/cm/m).</li>
         </ul>
         <br>
 
@@ -45,7 +47,7 @@
         <br>
 
         <h3>4. Tools</h3>
-        <p>Access the Toolbox from the menu to use various sensor-based tools: Distance, Angle, Level, Compass, Altitude, Barometer, Decibel Meter, Light Meter, etc. More features coming soon.</p>
+        <p>Access the Toolbox from the menu to use various sensor-based tools: Distance, Angle, Level, Compass, Altitude, Barometer, Decibel Meter, Light Meter, Airtightness, NFC Reader/Writer, etc. More features coming soon.</p>
         <br>
 
         <h3>5. About</h3>
@@ -247,4 +249,133 @@
     <string name="two_step_msg_height_set">Camera height set. Hold phone at eye level to measure.</string>
     <string name="two_step_msg_height_invalid">Please enter a valid height</string>
     <string name="two_step_msg_calc_first">Please calculate first</string>
+
+    <!-- Airtightness Tool -->
+    <string name="tool_pressure">Airtightness</string>
+    <string name="airtight_start">Start Monitor</string>
+    <string name="airtight_stop">Stop</string>
+    <string name="airtight_current">Pressure: %.2f hPa</string>
+    <string name="airtight_max">Max: %.2f</string>
+    <string name="airtight_min">Min: %.2f</string>
+    <string name="airtight_range">Range: %.2f</string>
+    <string name="airtight_title">Airtightness Check</string>
+    <string name="airtight_desc_principle">Principle:\nMost waterproof phones detect internal pressure via barometer. Try pressing the screen firmly (carefully). If airtight, internal pressure rises instantly. If broken, pressure changes little or drops quickly.</string>
+
+    <!-- Realtime Settings -->
+    <string name="title_realtime_settings">Realtime Settings</string>
+    <string name="label_refresh_delay">Refresh Delay: %d ms</string>
+    <string name="label_display_unit">Display Unit:</string>
+    <string name="unit_label_mm">mm</string>
+    <string name="unit_label_cm">cm</string>
+    <string name="unit_label_m">m</string>
+
+    <!-- NFC Tool -->
+    <string name="tool_nfc_title">NFC Reader/Writer</string>
+    <string name="nfc_read_title">Read Content</string>
+    <string name="nfc_status_waiting">Move an NFC device or tag close to the back of the phone...</string>
+    <string name="nfc_read_content_hint">Read text content</string>
+    <string name="nfc_write_title">Write Content</string>
+    <string name="nfc_write_hint">Enter text to write</string>
+    <string name="nfc_btn_write">Write to Tag</string>
+    <string name="nfc_write_instruction">After clicking "Write to Tag", move the tag close to the back of the phone to write.</string>
+    <string name="nfc_status_write_mode">Ready to write... Please approach tag</string>
+    <string name="nfc_msg_write_success">Write success!</string>
+    <string name="nfc_msg_write_fail">Write failed, please try again</string>
+    <string name="nfc_msg_read_error">Read failed</string>
+    <string name="nfc_msg_not_supported">This device does not support NFC</string>
+    <string name="nfc_msg_disabled">NFC is disabled, please enable it in settings</string>
+    <string name="btn_copy">Copy Content</string>
+    <string name="btn_clone">Write to New Tag</string>
+    <string name="msg_copied">Copied to clipboard</string>
+    <string name="nfc_msg_clone_ready">Ready to clone... Please bring a new blank tag close</string>
+    <string name="nfc_msg_write_empty">No data to write, please read a tag first</string>
+    
+    <!-- NFC Types -->
+    <string-array name="nfc_write_types">
+        <item>Text</item>
+        <item>URL</item>
+        <item>Phone</item>
+        <item>App</item>
+        <item>WiFi</item>
+        <item>Bluetooth Pairing</item>
+        <item>Contact (vCard)</item>
+        <item>Location</item>
+    </string-array>
+    
+    <string name="nfc_hint_text">Enter text content</string>
+    <string name="nfc_hint_url">Enter URL (http://...)</string>
+    <string name="nfc_hint_phone">Enter phone number</string>
+    <string name="nfc_label_app">Application</string>
+    <string name="nfc_btn_select_app">Select App</string>
+    <string name="nfc_hint_wifi_ssid">WiFi SSID</string>
+    <string name="nfc_hint_wifi_pass">WiFi Password</string>
+    <string name="nfc_wifi_nopass">No Password</string>
+    <string name="label_select_app">Select an app to launch</string>
+    <string name="hint_search_app">Search app name...</string>
+    
+    <!-- New Inputs -->
+    <string name="nfc_hint_bt_mac">MAC Address (e.g., 00:11:22:33:AA:BB)</string>
+    <string name="nfc_hint_contact_name">Name</string>
+    <string name="nfc_hint_contact_phone">Phone Number</string>
+    <string name="nfc_hint_contact_email">Email</string>
+    <string name="nfc_hint_loc_lat">Latitude</string>
+    <string name="nfc_hint_loc_lon">Longitude</string>
+    <string name="nfc_btn_current_loc">Get Location</string>
+    <string name="title_detect_alipay">Alipay Link Detected</string>
+    <string name="msg_detect_alipay">Detected Alipay link, decode to original link?</string>
+    <string name="btn_decode">Decode</string>
+    <string name="title_generate_qr">Generate QR Code</string>
+    <string name="msg_generate_qr">Payment link detected, generate QR code?</string>
+    <string name="btn_generate">Generate</string>
+    <string name="hint_qr_screenshot">Take a screenshot to save the QR code</string>
+    
+    <string name="nfc_security_title">Security &amp; Protection</string>
+    <string name="btn_lock_tag">Permanent Lock (Read-Only)</string>
+    <string name="btn_set_pwd">Set Password</string>
+    <string name="btn_remove_pwd">Remove Password</string>
+    <string name="msg_lock_confirm">Are you sure you want to permanently lock this tag? This is irreversible! The tag will become read-only.\n\nPlease type "yes" to confirm.</string>
+    <string name="error_lock_confirm_fail">Incorrect input, operation canceled.</string>
+    <string name="msg_lock_success">Tag locked successfully</string>
+    <string name="msg_lock_fail">Lock failed</string>
+    <string name="dialog_pwd_title">Enter 4-digit Password</string>
+    <string name="msg_pwd_len_err">Password must be 4 characters</string>
+    <string name="msg_pwd_success">Password set successfully</string>
+    <string name="msg_pwd_fail">Failed to set password</string>
+    <string name="msg_auth_success">Verify/Remove success</string>
+    <string name="msg_auth_fail">Verify/Remove failed</string>
+    <string name="nfc_status_lock_mode">Mode: Ready to Lock (⚠️Irreversible! Approach tag)</string>
+    <string name="nfc_status_pwd_mode">Mode: Write Password (Approach tag)</string>
+    <string name="nfc_status_unpwd_mode">Mode: Unlock Password (Approach tag)</string>
+    <string name="nfc_status_waiting_write">Enter content then Write</string>
+    <string name="nfc_btn_cancel_action">Cancel Write or Lock Action</string>
+    <string name="nfc_btn_get_alipay_red_packet">Get Alipay Red Packet QR</string>
+    <string name="title_author_red_packet_qr">Author Red Packet QR</string>
+    <string name="hint_author_red_packet_qr">Take a screenshot to save the QR code. Scan with Alipay to receive a daily red packet and support the author.</string>
+    
+    <!-- NFC Toast & Status Messages -->
+    <string name="msg_action_canceled">Operation canceled</string>
+    <string name="msg_gen_qr_fail">Failed to generate QR: %s</string>
+    <string name="msg_data_format_err">Data format error: %s</string>
+    <string name="msg_tag_readonly">Tag is read-only</string>
+    <string name="msg_tag_capacity_low">Tag capacity insufficient</string>
+    <string name="msg_tag_not_writable_ndef">Cannot write to tag (NDEF unsupported)</string>
+    <string name="msg_tag_empty">Empty Tag\n%s</string>
+    <string name="msg_tag_unavailable_info">Unable to get details</string>
+    <string name="msg_tag_non_ndef">Non-NDEF or unsupported tag\n%s</string>
+    <string name="msg_read_success">Read success</string>
+    <string name="msg_tag_writable">Writable</string>
+    <string name="msg_tag_locked_readonly">Locked (Read-Only)</string>
+    <string name="msg_tag_unformatted">Unformatted (Writable)</string>
+    <string name="msg_tag_readonly_non_ndef">Read-Only/Non-NDEF</string>
+    <string name="msg_decode_result_header">=== Decode Result ===</string>
+    <string name="msg_decode_original_link">Original Link (Scheme): \n%s\n</string>
+    <string name="msg_decode_payment_code">Payment/QR Link (codeContent): \n%s\n</string>
+    <string name="msg_decode_payment_qr">Payment/QR Link (qrcode): \n%s\n</string>
+    <string name="msg_decode_param_fail">Param parse failed: %s\n</string>
+    <string name="search_qr_link_marker">Payment/QR Link</string>
+
+    <string name="nfc_btn_saved_wifi">Saved WiFi</string>
+    <string name="nfc_title_saved_wifi">Select Saved/Nearby WiFi</string>
+    <string name="nfc_msg_no_wifi_permission">Location permission needed to search WiFi</string>
+    <string name="nfc_msg_no_wifi_found">No WiFi found</string>
 </resources>

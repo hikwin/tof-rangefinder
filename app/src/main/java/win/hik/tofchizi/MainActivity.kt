@@ -47,12 +47,19 @@ class MainActivity : BaseActivity(), ToFSensorHelper.Listener {
     private var countdownRemaining: Int = 0
     private lateinit var dbHelper: AppDatabaseHelper
     
+    // Refresh Rate Control
+    private var distRefreshIntervalMs: Long = 0
+    private var lastDistUpdate: Long = 0
+    
     // Cache current values for saving
     // Cache current values for saving
     @Volatile private var currentDistance: Int = 0
     @Volatile private var currentPitch: Float = 0f
     @Volatile private var currentYaw: Float = 0f
     @Volatile private var currentAzimuth: Float = 0f
+    
+    // Display Unit
+    private var displayUnit: String = "mm" // mm, cm, m
 
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -75,6 +82,10 @@ class MainActivity : BaseActivity(), ToFSensorHelper.Listener {
         val crosshairColor = intent.getIntExtra("crosshairColor", prefs.getInt("crosshair_color", android.graphics.Color.RED))
         binding.overlay.setCrosshairColor(crosshairColor)
         countdownSeconds = prefs.getInt("countdown_seconds", 0)
+        binding.overlay.setCrosshairColor(crosshairColor)
+        countdownSeconds = prefs.getInt("countdown_seconds", 0)
+        distRefreshIntervalMs = prefs.getLong("refresh_interval_ms", 0L)
+        displayUnit = prefs.getString("display_unit", "mm") ?: "mm"
         locked = prefs.getBoolean("locked", false)
         updateCountdownLabel()
         updatePauseLabel()
@@ -101,6 +112,7 @@ class MainActivity : BaseActivity(), ToFSensorHelper.Listener {
         
         binding.btnDirectSave.setOnClickListener { saveRecord("") }
         binding.btnNoteSave.setOnClickListener { showNoteDialog() }
+        binding.btnSettings.setOnClickListener { showRefreshRateDialog() }
     }
 
     override fun onResume() {
@@ -275,9 +287,29 @@ class MainActivity : BaseActivity(), ToFSensorHelper.Listener {
     override fun onDistanceMeters(value: Float) {
         if (isPaused) return
         currentDistance = value.toInt()
-        val t = String.format("%d", currentDistance)
-        runOnUiThread {
-            binding.overlay.setDistanceText(t)
+        
+        val now = System.currentTimeMillis()
+        if (now - lastDistUpdate >= distRefreshIntervalMs) {
+            lastDistUpdate = now
+            lastDistUpdate = now
+            
+            val t = when (displayUnit) {
+                "cm" -> String.format("%.1f cm", currentDistance / 10f)
+                "m"  -> String.format("%.3f m", currentDistance / 1000f)
+                else -> String.format("%d mm", currentDistance)
+            }
+            // Use just the number for big display? Or with unit? 
+            // Previous code used just number for mm. But User requested "formatting mm into cm".
+            // Let's assume user wants to see the unit or at least the converted value. 
+            // The overlay probably handles text size.
+            // If I pass "12.5 cm", it might be too long? CrosshairOverlay draws simple text.
+            // Let's stick to compact representation if possible, but unit is important.
+            // Actually, previously it was just `String.format("%d", currentDistance)` - NO unit shown in overlay?
+            // Checking CrosshairOverlay: `canvas.drawText(text, ...)`
+            
+            runOnUiThread {
+                binding.overlay.setDistanceText(t)
+            }
         }
     }
 
@@ -295,6 +327,85 @@ class MainActivity : BaseActivity(), ToFSensorHelper.Listener {
 
     override fun onUnsupported() {
         runOnUiThread { binding.overlay.setDistanceText(getString(R.string.error_tof_unsupport)) }
+    }
+
+
+
+    private fun showRefreshRateDialog() {
+        // Dialog with SeekBar for Refresh Rate + Unit Selection
+        val dialogView = android.widget.LinearLayout(this)
+        dialogView.orientation = android.widget.LinearLayout.VERTICAL
+        dialogView.setPadding(50, 50, 50, 50)
+        
+        // 1. Refresh Rate
+        val tvLabel = android.widget.TextView(this)
+        tvLabel.text = getString(R.string.label_refresh_delay, distRefreshIntervalMs)
+        dialogView.addView(tvLabel)
+        
+        val seekBar = android.widget.SeekBar(this)
+        seekBar.max = 1000 // Max 1 second delay
+        seekBar.progress = distRefreshIntervalMs.toInt()
+        dialogView.addView(seekBar)
+        
+        seekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
+                tvLabel.text = getString(R.string.label_refresh_delay, progress)
+            }
+            override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {}
+        })
+
+        // 2. Unit Selection
+        val tvUnitLabel = android.widget.TextView(this)
+        tvUnitLabel.text = "\n" + getString(R.string.label_display_unit)
+        tvUnitLabel.setPadding(0, 30, 0, 10)
+        dialogView.addView(tvUnitLabel)
+
+        val radioGroup = android.widget.RadioGroup(this)
+        radioGroup.orientation = android.widget.RadioGroup.HORIZONTAL
+        
+        val rbMm = android.widget.RadioButton(this)
+        rbMm.text = getString(R.string.unit_label_mm)
+        rbMm.tag = "mm"
+        
+        val rbCm = android.widget.RadioButton(this)
+        rbCm.text = getString(R.string.unit_label_cm)
+        rbCm.tag = "cm"
+        
+        val rbM = android.widget.RadioButton(this)
+        rbM.text = getString(R.string.unit_label_m)
+        rbM.tag = "m"
+        
+        radioGroup.addView(rbMm)
+        radioGroup.addView(rbCm)
+        radioGroup.addView(rbM)
+        
+        when (displayUnit) {
+            "cm" -> rbCm.isChecked = true
+            "m" -> rbM.isChecked = true
+            else -> rbMm.isChecked = true
+        }
+        
+        dialogView.addView(radioGroup)
+
+        android.app.AlertDialog.Builder(this)
+            .setTitle(getString(R.string.title_realtime_settings))
+            .setView(dialogView)
+            .setPositiveButton(getString(R.string.btn_confirm)) { _, _ ->
+                // Save Refresh Rate
+                distRefreshIntervalMs = seekBar.progress.toLong()
+                prefs.edit().putLong("refresh_interval_ms", distRefreshIntervalMs).apply()
+                
+                // Save Unit
+                val selectedId = radioGroup.checkedRadioButtonId
+                if (selectedId != -1) {
+                    val rb = dialogView.findViewById<android.widget.RadioButton>(selectedId)
+                    displayUnit = rb.tag.toString()
+                    prefs.edit().putString("display_unit", displayUnit).apply()
+                }
+            }
+            .setNegativeButton(getString(R.string.btn_cancel), null)
+            .show()
     }
 
     private fun showCountdownDialog() {

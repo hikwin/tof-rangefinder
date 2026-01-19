@@ -28,7 +28,9 @@ class ToolsActivity : BaseActivity() {
             ToolItem(R.string.tool_altitude, R.drawable.ic_tool_altitude),
             ToolItem(R.string.tool_frame_alignment, R.drawable.ic_tool_frame),
             ToolItem(R.string.tool_two_step, R.drawable.ic_tool_two_step),
-            ToolItem(R.string.tool_lightning, R.drawable.ic_tool_lightning)
+            ToolItem(R.string.tool_lightning, R.drawable.ic_tool_lightning),
+            ToolItem(R.string.tool_pressure, R.drawable.ic_tool_pressure),
+            ToolItem(R.string.tool_nfc_title, R.drawable.ic_tool_nfc)
         )
 
         val gridView = findViewById<GridView>(R.id.gridViewTools)
@@ -45,6 +47,8 @@ class ToolsActivity : BaseActivity() {
                 R.string.tool_altitude -> startActivity(android.content.Intent(this, AltitudeActivity::class.java))
                 R.string.tool_two_step -> startActivity(android.content.Intent(this, TwoStepMeasurementActivity::class.java))
                 R.string.tool_lightning -> startActivity(android.content.Intent(this, LightningDistanceActivity::class.java))
+                R.string.tool_pressure -> startActivity(android.content.Intent(this, AirtightnessActivity::class.java))
+                R.string.tool_nfc_title -> startActivity(android.content.Intent(this, NfcActivity::class.java))
                 else -> {
                      val name = getString(tool.nameRes)
                      if (name.isNotEmpty()) {
