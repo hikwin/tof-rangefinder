@@ -288,6 +288,7 @@
     <string name="btn_clone">Write to New Tag</string>
     <string name="msg_copied">Copied to clipboard</string>
     <string name="nfc_msg_clone_ready">Ready to clone... Please bring a new blank tag close</string>
+    <string name="btn_reset_read">Reset Read</string>
     <string name="nfc_msg_write_empty">No data to write, please read a tag first</string>
     
     <!-- NFC Types -->
@@ -300,6 +301,7 @@
         <item>Bluetooth Pairing</item>
         <item>Contact (vCard)</item>
         <item>Location</item>
+        <item>Card UID</item>
     </string-array>
     
     <string name="nfc_hint_text">Enter text content</string>
@@ -347,7 +349,7 @@
     <string name="nfc_status_pwd_mode">Mode: Write Password (Approach tag)</string>
     <string name="nfc_status_unpwd_mode">Mode: Unlock Password (Approach tag)</string>
     <string name="nfc_status_waiting_write">Enter content then Write</string>
-    <string name="nfc_btn_cancel_action">Cancel Write or Lock Action</string>
+    <string name="nfc_btn_cancel_action">Cancel All Write/Lock Operations</string>
     <string name="nfc_btn_get_alipay_red_packet">Get Alipay Red Packet QR</string>
     <string name="title_author_red_packet_qr">Author Red Packet QR</string>
     <string name="hint_author_red_packet_qr">Take a screenshot to save the QR code. Scan with Alipay to receive a daily red packet and support the author.</string>
@@ -378,4 +380,60 @@
     <string name="nfc_title_saved_wifi">Select Saved/Nearby WiFi</string>
     <string name="nfc_msg_no_wifi_permission">Location permission needed to search WiFi</string>
     <string name="nfc_msg_no_wifi_found">No WiFi found</string>
+
+    <string name="nfc_label_uid">Card Serial No (UID)</string>
+    <string name="nfc_btn_write_uid">Write UID (Clone Card ID)</string>
+    <string name="msg_uid_copied">UID Copied</string>
+    <string name="nfc_msg_write_uid_ready">Mode: Writing UID...</string>
+    <string name="dialog_uid_warn_title">⚠️ Risk Warning</string>
+    <string name="dialog_uid_warn_msg">Standard NFC cards have a fixed factory UID that cannot be changed!\n\nThis feature is ONLY for special \'Magic Cards\' (e.g., CUID, FUID, Magic NTAG). Standard access cards cannot hold a new UID.\n\nWriting an incorrect BCC checksum may permanently damage (brick) the card. Continue?</string>
+    <string name="msg_uid_write_success">UID command sent</string>
+    <string name="msg_uid_write_success_short">Success</string>
+    <string name="msg_uid_write_fail">UID Write Failed: %s</string>
+    <string name="msg_uid_write_fail_short">Failed</string>
+    <string name="msg_uid_len_mismatch">UID length mismatch (Source:%1$d, Target:%2$d). Force write may damage card.</string>
+    <string name="nfc_msg_enter_content">Please enter content first</string>
+    <string name="btn_cancel_op">Cancel Operation</string>
+    <string name="msg_busy_action">Task in progress. Please cancel it first or use \'Cancel All\' button at the bottom.</string>
+    <string name="nfc_help_title">NFC User Guide</string>
+    <string name="nfc_help_content"><![CDATA[
+<b>1. Read Tag</b><br/>
+Keep screen unlocked. Tap the NFC tag against the NFC area (usually near the camera) to read. Supports text, URL, WiFi, vCard, etc.<br/>
+<br/>
+<b>2. Write Content</b><br/>
+Select the content type (e.g., URL, Text, App), enter content, tap <b>"Write to Tag"</b>, then approach the tag. Ensure tag is not locked.<br/>
+<br/>
+<b>3. Copy &amp; Clone</b><br/>
+<b>Copy Content</b>: Copies read text to clipboard.<br/>
+<b>Write to New Tag</b>: Read source tag first (button becomes active), then tap to write exact data to a blank tag.<br/>
+<br/>
+<b>4. UID Clone (Advanced)</b><br/>
+Only for <b>CUID/FUID/Magic NTAG</b> cards. Standard access/bus cards CANNOT change UID. Used for backing up ID credentials. ⚠️<b>Warning:</b> Risk of bricking the card.<br/>
+<br/>
+<b>5. Security &amp; Lock</b><br/>
+<b>Permanent Lock</b>: Makes tag read-only. <b>Irreversible!</b><br/>
+<b>Password Protection</b>: For NTAG21x chips. Require password to rewrite data.<br/>
+<br/>
+<b>6. FAQ</b><br/>
+- <b>No response</b>: Check if NFC is on. Move tag slowly to find the sweet spot.<br/>
+- <b>Write failed</b>: Tag might be full, damaged, or locked.<br/>
+    ]]></string>
+    <string name="msg_invalid_data_format_simple">Invalid data format</string>
+    <string name="msg_invalid_mac_format">Invalid MAC address format</string>
+    <string name="msg_enter_name_or_phone">Please enter name or phone</string>
+    <string name="msg_enter_lat_lon">Please enter valid latitude and longitude</string>
+    <string name="msg_enter_uid">Please enter UID</string>
+    <string name="msg_uid_format_error">Invalid UID format (Hex expected)</string>
+    <string name="msg_uid_length_error">Invalid UID length (Usually 4/7/10 bytes)</string>
+
+    <string name="msg_unsupported_tag_tech">Unsupported tag technology</string>
+    <string name="msg_unsupported_tag_tech_specific">Unsupported tag technology (Ultralight/NTAG required)</string>
+    <string name="msg_auth_fail_remove">Authentication failed or cannot remove</string>
+    <string name="msg_unknown_model">Unknown model</string>
+    <string name="msg_pwd_removed">Password protection removed</string>
+    <string name="msg_op_failed">Operation failed: %s</string>
+    <string name="msg_set_pwd_fail">Failed to set password: %s</string>
+    <string name="msg_unknown_ntag">Unknown or unsupported NTAG model</string>
+    <string name="msg_tag_readonly_support">Tag does not support read-only</string>
+    <string name="msg_uid_clone_not_supported">UID cloning not supported for this tag type</string>
 </resources>

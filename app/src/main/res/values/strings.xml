@@ -287,6 +287,7 @@
     <string name="btn_clone">写入新卡</string>
     <string name="msg_copied">已复制到剪贴板</string>
     <string name="nfc_msg_clone_ready">准备复制... 请将新空白标签靠近手机</string>
+    <string name="btn_reset_read">重置读取</string>
     <string name="nfc_msg_write_empty">无可写入数据，请先读取标签</string>
     
     <!-- NFC Types -->
@@ -299,6 +300,7 @@
         <item>蓝牙连接 (Bluetooth)</item>
         <item>联系人 (Contact)</item>
         <item>地理位置 (Location)</item>
+        <item>卡片序列号 (UID)</item>
     </string-array>
     
     <string name="nfc_hint_text">输入文本内容</string>
@@ -346,7 +348,7 @@
     <string name="nfc_status_pwd_mode">模式：写入密码 (请靠近标签)</string>
     <string name="nfc_status_unpwd_mode">模式：解锁密码 (请靠近标签)</string>
     <string name="nfc_status_waiting_write">输入内容后写入</string>
-    <string name="nfc_btn_cancel_action">取消写入或锁定操作</string>
+    <string name="nfc_btn_cancel_action">取消所有写入或锁定操作</string>
     <string name="nfc_btn_get_alipay_red_packet">获取支付宝碰一碰红包二维码</string>
     <string name="title_author_red_packet_qr">作者红包二维码</string>
     <string name="hint_author_red_packet_qr">可自行截图保存二维码，用支付宝扫描该码领取每日红包，领取红包的同时也支持了作者</string>
@@ -377,4 +379,60 @@
     <string name="nfc_title_saved_wifi">选择已存/附近WiFi</string>
     <string name="nfc_msg_no_wifi_permission">需要位置权限以获取WiFi列表</string>
     <string name="nfc_msg_no_wifi_found">未找到WiFi网络</string>
+    
+    <string name="nfc_label_uid">卡片序列号 (UID / Serial No)</string>
+    <string name="nfc_btn_write_uid">写入UID号 (克隆卡片ID)</string>
+    <string name="msg_uid_copied">序列号已复制</string>
+    <string name="nfc_msg_write_uid_ready">模式:写入...</string>
+    <string name="dialog_uid_warn_title">⚠️ 风险警告</string>
+    <string name="dialog_uid_warn_msg">普通NFC卡的序列号(UID)出厂固化，无法修改！\n\n此功能仅适用于特殊的“UID可变卡” (如CUID、FUID、Magic NTAG等)。\n\n写入错误的UID校验位(BCC)可能导致卡片永久损坏(变砖)。是否继续？</string>
+    <string name="msg_uid_write_success">UID指令已发送</string>
+    <string name="msg_uid_write_success_short">写入/发送成功</string>
+    <string name="msg_uid_write_fail">UID写入失败: %s</string>
+    <string name="msg_uid_write_fail_short">写入失败</string>
+    <string name="msg_uid_len_mismatch">UID长度不匹配 (源:%1$d, 目标:%2$d)，强制写入可能损坏卡片</string>
+    <string name="nfc_msg_enter_content">请输入内容</string>
+    <string name="btn_cancel_op">取消操作</string>
+    <string name="msg_busy_action">任务执行中，请先取消或按底部的“取消所有操作”按钮</string>
+    <string name="nfc_help_title">NFC功能使用指南</string>
+    <string name="nfc_help_content"><![CDATA[
+<b>1. 读取标签</b><br/>
+保持屏幕解锁，将手机背面NFC感应区（通常在摄像头附近）紧贴标签即可读取。支持解析文本、网址、WiFi配置、电子名片等信息。<br/>
+<br/>
+<b>2. 写入内容</b><br/>
+选择要写入的类型（如网址、文本、启动应用），输入对应内容后点击<b>“写入标签”</b>，再将标签靠近手机即可写入。请确保标签未被锁定。<br/>
+<br/>
+<b>3. 复制与克隆</b><br/>
+<b>复制内容</b>：仅将读取到的文本复制到剪贴板。<br/>
+<b>写入新卡</b>：先读取源标签数据（按钮变亮），点击后将数据完整写入到另一张空白标签中。<br/>
+<br/>
+<b>4. UID克隆 (高级功能)</b><br/>
+仅支持<b>CUID/FUID/Magic NTAG</b>等特殊卡片。普通非UID门禁卡/公交卡无法修改UID。此功能用于备份门禁卡ID。⚠️<b>警告：</b>操作不当可能导致卡片损坏。<br/>
+<br/>
+<b>5. 安全与锁定</b><br/>
+<b>永久锁定</b>：将标签设为只读。<b>此操作不可逆！</b>锁定后无法再修改。<br/>
+<b>密码保护</b>：仅支持NTAG21x中支持密码的卡片。设置密码后，需验证才能改写数据。<br/>
+<br/>
+<b>6. 常见问题</b><br/>
+- <b>无反应</b>：请检查NFC开关是否打开，或尝试缓慢移动找准感应位置。<br/>
+- <b>写入失败</b>：可能是标签容量不足、已损坏或被锁定。<br/>
+    ]]></string>
+    <string name="msg_invalid_data_format_simple">无效的数据格式</string>
+    <string name="msg_invalid_mac_format">MAC地址格式错误</string>
+    <string name="msg_enter_name_or_phone">请至少输入姓名或电话</string>
+    <string name="msg_enter_lat_lon">请输入经纬度</string>
+    <string name="msg_enter_uid">请输入UID</string>
+    <string name="msg_uid_format_error">UID格式不正确 (应为16进制)</string>
+    <string name="msg_uid_length_error">UID长度异常 (通常为4/7/10字节)</string>
+
+    <string name="msg_unsupported_tag_tech">不支持的标签技术</string>
+    <string name="msg_unsupported_tag_tech_specific">不支持的标签技术 (需Ultralight/NTAG)</string>
+    <string name="msg_auth_fail_remove">验证失败或无法移除</string>
+    <string name="msg_unknown_model">未知型号</string>
+    <string name="msg_pwd_removed">密码保护已移除</string>
+    <string name="msg_op_failed">操作失败: %s</string>
+    <string name="msg_set_pwd_fail">设置密码失败: %s</string>
+    <string name="msg_unknown_ntag">未知或不支持的NTAG型号</string>
+    <string name="msg_tag_readonly_support">TAG不支持只读</string>
+    <string name="msg_uid_clone_not_supported">暂不支持此卡类型的UID克隆</string>
 </resources>

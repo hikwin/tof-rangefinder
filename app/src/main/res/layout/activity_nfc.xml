@@ -31,6 +31,14 @@
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:layout_marginStart="8dp"/>
+
+        <ImageButton
+            android:id="@+id/btnHelp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_help"
+            app:tint="@color/text_primary" />
     </LinearLayout>
 
     <ScrollView
@@ -76,9 +84,13 @@
                         android:layout_marginBottom="12dp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilReadContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/nfc_read_content_hint"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_content_copy"
+                        app:endIconContentDescription="@string/btn_copy"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -100,23 +112,102 @@
                         android:layout_marginTop="8dp">
 
                         <Button
-                            android:id="@+id/btnCopy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/btn_copy"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"/>
-
-                        <Space
-                            android:layout_width="16dp"
-                            android:layout_height="wrap_content" />
-
-                        <Button
                             android:id="@+id/btnClone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/btn_clone"
                             android:enabled="false"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                        <Space
+                            android:layout_width="16dp"
+                            android:layout_height="wrap_content" />
+
+                        <Button
+                            android:id="@+id/btnResetRead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_reset_read"
+                            android:textColor="@color/error_color_material_light"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+                        <Space
+                            android:layout_width="16dp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/tvCloneStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/brand_primary"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <!-- UID / Serial Number Section -->
+                    <LinearLayout
+                        android:id="@+id/layoutUidSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nfc_label_uid"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="4dp">
+
+                            <TextView
+                                android:id="@+id/tvTagUid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="--"
+                                android:fontFamily="monospace"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"/>
+                                
+                            <ImageButton
+                                android:id="@+id/btnCopyUid"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_content_copy"
+                                android:tint="@color/brand_primary"
+                                android:scaleType="fitCenter"
+                                android:padding="4dp"
+                                android:contentDescription="@string/btn_copy"/>
+
+                            <TextView
+                                android:id="@+id/tvUidStatus"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textSize="12sp"
+                                android:textColor="@color/brand_primary"/>
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnWriteUid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nfc_btn_write_uid"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_marginTop="8dp"/>
                     </LinearLayout>
 
                 </LinearLayout>

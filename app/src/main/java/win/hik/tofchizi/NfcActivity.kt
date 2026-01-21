@@ -12,6 +12,10 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.nfc.tech.NdefFormatable
+import android.nfc.tech.MifareUltralight
+import android.nfc.tech.MifareClassic
+import android.nfc.tech.IsoDep
+import android.nfc.tech.NfcA
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -35,15 +39,19 @@ import java.io.ByteArrayOutputStream
 class NfcActivity : BaseActivity() {
 
     private var nfcAdapter: NfcAdapter? = null
+    // Flag to distinguish if UID write was initiated from input (btnWrite) or from read UID (btnWriteUid)
+    private var pendingUidWriteFromInput = false
     private lateinit var tvStatus: TextView
     private lateinit var tvWriteStatus: TextView
     private lateinit var tvSecurityStatus: TextView
     private lateinit var etRead: EditText
     private lateinit var etWrite: EditText
     private lateinit var btnWrite: Button
-    private lateinit var btnCopy: Button
+    private lateinit var tilReadContent: com.google.android.material.textfield.TextInputLayout
     private lateinit var btnClone: Button
+    private lateinit var btnResetRead: Button
     private lateinit var btnBack: ImageButton
+    private lateinit var btnHelp: ImageButton
     private lateinit var btnSavedWifi: Button
 
     private lateinit var spWriteType: Spinner
@@ -57,6 +65,12 @@ class NfcActivity : BaseActivity() {
 
     private lateinit var layoutBtInput: LinearLayout
     private lateinit var etBtMac: EditText
+    
+    // UID Section
+    private lateinit var layoutUidSection: LinearLayout
+    private lateinit var tvTagUid: TextView
+    private lateinit var tvUidStatus: TextView
+    private lateinit var btnWriteUid: Button
     
     private lateinit var layoutContactInput: LinearLayout
     private lateinit var etContactName: EditText
@@ -78,7 +92,7 @@ class NfcActivity : BaseActivity() {
     private var cachedNdefMessage: NdefMessage? = null
     
     private enum class NfcAction {
-        READ, WRITE, LOCK, SET_PWD, REMOVE_PWD
+        READ, WRITE, LOCK, SET_PWD, REMOVE_PWD, WRITE_UID
     }
     private var currentAction = NfcAction.READ
     private var pendingPassword: String? = null
@@ -102,9 +116,22 @@ class NfcActivity : BaseActivity() {
         etRead = findViewById(R.id.etReadContent)
         etWrite = findViewById(R.id.etWriteContent)
         btnWrite = findViewById(R.id.btnWrite)
-        btnCopy = findViewById(R.id.btnCopy)
+        // btnCopy removed
         btnClone = findViewById(R.id.btnClone)
+        btnResetRead = findViewById(R.id.btnResetRead)
         btnBack = findViewById(R.id.btnBack)
+        btnHelp = findViewById(R.id.btnHelp)
+
+        tilReadContent = findViewById(R.id.tilReadContent)
+        tilReadContent.setEndIconOnClickListener {
+            val text = etRead.text.toString()
+            if (text.isNotEmpty()) {
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("NFC Content", text)
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(this, R.string.msg_copied, Toast.LENGTH_SHORT).show()
+            }
+        }
         
         btnLock = findViewById(R.id.btnLock)
         btnSetPwd = findViewById(R.id.btnSetPwd)
@@ -135,6 +162,7 @@ class NfcActivity : BaseActivity() {
         btnCurrentLoc = findViewById(R.id.btnCurrentLoc)
 
         btnBack.setOnClickListener { finish() }
+        btnHelp.setOnClickListener { showHelpDialog() }
 
         btnSavedWifi.setOnClickListener { checkAndShowSavedWifi() }
         btnCurrentLoc.setOnClickListener { getCurrentLocation() }
@@ -175,45 +203,159 @@ class NfcActivity : BaseActivity() {
             Toast.makeText(this, R.string.nfc_msg_disabled, Toast.LENGTH_LONG).show()
         }
 
+        // --- Write Tag Button ---
         btnWrite.setOnClickListener {
-            if (validateInput()) {
-                pendingWriteText = etWrite.text.toString() // For Text/URL/Phone
-                pendingWriteMessage = null 
-                currentAction = NfcAction.WRITE
-                tvWriteStatus.text = getString(R.string.nfc_status_write_mode)
-                tvWriteStatus.setTextColor(getColor(R.color.brand_primary))
-                // Clear other statuses if needed
-                tvStatus.text = getString(R.string.nfc_status_waiting)
-                tvSecurityStatus.text = getString(R.string.nfc_status_waiting)
-            }
-        }
-
-        btnCopy.setOnClickListener {
-            val text = etRead.text.toString()
-            if (text.isNotEmpty()) {
-                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("NFC Content", text)
-                clipboard.setPrimaryClip(clip)
-                Toast.makeText(this, R.string.msg_copied, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        btnClone.setOnClickListener {
-            if (cachedNdefMessage != null) {
-                pendingWriteMessage = cachedNdefMessage
-                pendingWriteText = null
-                currentAction = NfcAction.WRITE
-                tvWriteStatus.text = getString(R.string.nfc_msg_clone_ready)
-                tvWriteStatus.setTextColor(getColor(R.color.brand_primary))
-                tvStatus.text = getString(R.string.nfc_status_waiting)
-                tvSecurityStatus.text = getString(R.string.nfc_status_waiting)
+            // Check cancel condition: 
+            // 1. Normal Write (currentAction == WRITE && not Clone)
+            // 2. UID Write FROM INPUT (currentAction == WRITE_UID && pendingUidWriteFromInput)
+            val isNormalWriteCancel = (currentAction == NfcAction.WRITE && pendingWriteMessage != cachedNdefMessage)
+            val isUidWriteCancel = (currentAction == NfcAction.WRITE_UID && pendingUidWriteFromInput)
+            
+            if (isNormalWriteCancel || isUidWriteCancel) {
+                // Already in Write mode -> Cancel
+                resetToReadState()
+                Toast.makeText(this, R.string.msg_action_canceled, Toast.LENGTH_SHORT).show()
+            } else if (currentAction != NfcAction.READ) {
+                 showBusyWarning()
             } else {
-                Toast.makeText(this, getString(R.string.nfc_msg_write_empty), Toast.LENGTH_SHORT).show()
+                if (validateInput()) {
+                     val input = etWrite.text.toString()
+                     // Start Write
+                     val typePosition = spWriteType.selectedItemPosition
+                     
+                     if (typePosition == 8) {
+                         // UID Write
+                         val uid = input.replace(":", "").replace(" ", "").trim()
+                         AlertDialog.Builder(this)
+                            .setTitle(R.string.dialog_uid_warn_title)
+                            .setMessage(R.string.dialog_uid_warn_msg)
+                            .setPositiveButton(android.R.string.ok) { _, _ ->
+                                pendingWriteText = uid
+                                pendingWriteMessage = null
+                                pendingUidWriteFromInput = true
+                                currentAction = NfcAction.WRITE_UID
+                                
+                                tvWriteStatus.text = getString(R.string.nfc_msg_write_uid_ready)
+                                tvWriteStatus.setTextColor(getColor(R.color.brand_primary))
+                                tvStatus.text = getString(R.string.nfc_status_waiting)
+                                
+                                btnWrite.text = getString(R.string.btn_cancel_op)
+                            }
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .show()
+                     } else {
+                         // Normal NDEF Write
+                         val message = createNdefMessage(input, typePosition)
+                         if (message != null) {
+                             pendingWriteMessage = message
+                             pendingWriteText = null
+                             currentAction = NfcAction.WRITE
+                             
+                             tvWriteStatus.text = getString(R.string.nfc_status_write_mode)
+                             tvWriteStatus.setTextColor(getColor(R.color.brand_primary))
+                             tvStatus.text = getString(R.string.nfc_status_waiting)
+                             
+                             // Toggle Button Text
+                             btnWrite.text = getString(R.string.btn_cancel_op)
+                         } else {
+                             Toast.makeText(this, R.string.msg_invalid_data_format_simple, Toast.LENGTH_SHORT).show()
+                         }
+                     }
+                }
+            }
+        }
+
+
+
+        // --- Clone Button ---
+        btnClone.setOnClickListener {
+             if (currentAction == NfcAction.WRITE && pendingWriteMessage == cachedNdefMessage) {
+                 // Already in Clone/Write mode -> Cancel
+                 resetToReadState(true)
+                 findViewById<TextView>(R.id.tvCloneStatus).text = getString(R.string.msg_action_canceled)
+             } else if (currentAction != NfcAction.READ) {
+                 showBusyWarning()
+             } else {
+                if (cachedNdefMessage != null) {
+                    pendingWriteMessage = cachedNdefMessage
+                    pendingWriteText = null
+                    currentAction = NfcAction.WRITE
+                    
+                    // Show in status View instead of toast
+                    findViewById<TextView>(R.id.tvCloneStatus).text = getString(R.string.nfc_msg_clone_ready)
+                    
+                    // Toggle Button Text
+                    btnClone.text = getString(R.string.btn_cancel_op)
+                } else {
+                    Toast.makeText(this, getString(R.string.nfc_msg_write_empty), Toast.LENGTH_SHORT).show()
+                }
+             }
+        }
+        
+        btnResetRead.setOnClickListener {
+            if (currentAction != NfcAction.READ) {
+                showBusyWarning()
+            } else {
+                clearReadData()
+            }
+        }
+        
+        // UID Section Listeners
+        layoutUidSection = findViewById(R.id.layoutUidSection)
+        tvTagUid = findViewById(R.id.tvTagUid)
+        val btnCopyUid = findViewById<ImageButton>(R.id.btnCopyUid)
+        tvUidStatus = findViewById(R.id.tvUidStatus) 
+        btnWriteUid = findViewById(R.id.btnWriteUid)
+        
+        btnCopyUid.setOnClickListener {
+             val uid = tvTagUid.text.toString()
+             if (uid.isNotEmpty() && uid != "--") {
+                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                 val clip = ClipData.newPlainText("NFC UID", uid)
+                 clipboard.setPrimaryClip(clip)
+                 Toast.makeText(this, R.string.msg_uid_copied, Toast.LENGTH_SHORT).show()
+             }
+        }
+        
+        btnWriteUid.setOnClickListener {
+            // Cancel ONLY if it's UID Write initiated by THIS button (so NOT from input)
+            if (currentAction == NfcAction.WRITE_UID && !pendingUidWriteFromInput) {
+                 // Already in UID Write mode -> Cancel
+                 resetToReadState()
+                 Toast.makeText(this, R.string.msg_action_canceled, Toast.LENGTH_SHORT).show()
+            } else if (currentAction != NfcAction.READ) {
+                 showBusyWarning()
+            } else {
+                val uid = tvTagUid.text.toString()
+                if (uid.isNotEmpty() && uid != "--") {
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.dialog_uid_warn_title)
+                        .setMessage(R.string.dialog_uid_warn_msg)
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                            pendingWriteText = uid 
+                            pendingWriteMessage = null
+                            currentAction = NfcAction.WRITE_UID
+                            
+                            // Update Status
+                            tvUidStatus.text = getString(R.string.nfc_msg_write_uid_ready)
+                            tvUidStatus.setTextColor(getColor(R.color.brand_primary))
+                            tvStatus.text = getString(R.string.nfc_status_waiting)
+                            
+                            // Toggle Button Text
+                            btnWriteUid.text = getString(R.string.btn_cancel_op)
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                }
             }
         }
         
         // Protection Buttons
         btnLock.setOnClickListener {
+            if (currentAction != NfcAction.READ) {
+                 showBusyWarning()
+                 return@setOnClickListener
+            }
             val input = EditText(this)
             val container = LinearLayout(this)
             container.orientation = LinearLayout.VERTICAL
@@ -243,27 +385,23 @@ class NfcActivity : BaseActivity() {
         }
         
         btnSetPwd.setOnClickListener {
-             promptForPassword(true)
+             if (currentAction != NfcAction.READ) {
+                 showBusyWarning()
+             } else {
+                 promptForPassword(true)
+             }
         }
         
         btnRemovePwd.setOnClickListener {
-             promptForPassword(false)
+             if (currentAction != NfcAction.READ) {
+                 showBusyWarning()
+             } else {
+                 promptForPassword(false)
+             }
         }
         
         btnCancelAction.setOnClickListener {
-            currentAction = NfcAction.READ
-            pendingWriteMessage = null
-            pendingWriteText = null
-            pendingPassword = null
-            
-            tvStatus.text = getString(R.string.nfc_status_waiting)
-            tvWriteStatus.text = getString(R.string.nfc_status_waiting_write)
-            tvSecurityStatus.text = getString(R.string.nfc_status_waiting)
-            
-            tvStatus.setTextColor(getColor(R.color.text_secondary))
-            tvWriteStatus.setTextColor(getColor(R.color.text_secondary))
-            tvSecurityStatus.setTextColor(getColor(R.color.text_secondary))
-            
+            resetToReadState()
             Toast.makeText(this, getString(R.string.msg_action_canceled), Toast.LENGTH_SHORT).show()
         }
         
@@ -272,6 +410,123 @@ class NfcActivity : BaseActivity() {
             NfcAdapter.ACTION_TECH_DISCOVERED == intent.action ||
             NfcAdapter.ACTION_TAG_DISCOVERED == intent.action) {
             handleIntent(intent)
+        }
+    }
+
+    private fun showBusyWarning() {
+        Toast.makeText(this, R.string.msg_busy_action, Toast.LENGTH_SHORT).show()
+    }
+    
+    private fun clearReadData() {
+        cachedNdefMessage = null
+        etRead.setText("")
+        tvTagUid.text = "--"
+        layoutUidSection.visibility = View.GONE
+        tvStatus.text = getString(R.string.nfc_status_waiting)
+        btnClone.isEnabled = false
+        Toast.makeText(this, R.string.msg_records_cleared, Toast.LENGTH_SHORT).show()
+    }
+    
+    private fun showHelpDialog() {
+        val s = getString(R.string.nfc_help_content)
+        // Use HtmlCompat if available, else standard
+        val message = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+             android.text.Html.fromHtml(s, android.text.Html.FROM_HTML_MODE_LEGACY)
+        } else {
+             @Suppress("DEPRECATION")
+             android.text.Html.fromHtml(s)
+        }
+        
+        AlertDialog.Builder(this)
+            .setTitle(R.string.nfc_help_title)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+    }
+    
+    private fun resetToReadState(preserveReadData: Boolean = false) {
+        pendingWriteMessage = null
+        pendingWriteText = null
+        pendingPassword = null
+        pendingUidWriteFromInput = false
+        currentAction = NfcAction.READ
+        
+        tvWriteStatus.text = getString(R.string.nfc_status_waiting_write)
+        tvWriteStatus.setTextColor(getColor(R.color.text_secondary))
+        
+        if (!preserveReadData) {
+            tvStatus.text = getString(R.string.nfc_status_waiting)
+            tvSecurityStatus.text = getString(R.string.nfc_status_waiting)
+            tvUidStatus.text = ""
+        } else {
+             // If preserving read data (likely just finished clone), we might want to keep the success msg?
+             // But valid reset behavior is clearing ephemeral status.
+             // User wants: "in writing new card execution stage... reset read should also show busy prompt" (done)
+             // "After writing new card success, buttons should restore... clone status prompt after reset button simple"
+             
+             // If this reset is called from success (finishAction), msg is already set. 
+             // If called from Cancel, we should clear it.
+             // But resetToReadState is called by both.
+             // The tvCloneStatus is new, let's clear it only if NOT preserving OR explicitly?
+             // Actually, if I just finished writing successfully, I want the status "Success" to REMAIN visible?
+             // "restore buttons" -> implies ready for next action.
+             // If I clear status immediately, user won't know if it succeeded.
+             // So, don't clear tvCloneStatus here immediately if preserveReadData is true (which is used for Clone success path now).
+        }
+        
+        // If preserving read data (Clone context), we DONT clear tvCloneStatus? 
+        // But if I click "Cancel" (which also calls reset(true) for clone), I DO want to clear "Ready to clone..." or "Success".
+        // Let's assume resetToReadState generally clears statuses unless we have a specific reason not to.
+        // But wait, if I put "Success" in tvCloneStatus then call reset(true), and reset clears it, it disappears instantly.
+        // So I should NOT clear tvCloneStatus inside resetToReadState IF I just set it.
+        // But resetToReadState doesn't know context.
+        // Simplest: Don't clear tvCloneStatus in resetToReadState. Clear it when STARTING a new action?
+        // Or Clear it only if !preserveReadData?
+        // Let's clear it if !preserveReadData, but for Clone Cancel (preserve=true) we might want to clear "Ready..."
+        
+        // Re-read: "After success, buttons restore... status prompt after reset button simple"
+        
+        val tvCloneStatus = findViewById<TextView>(R.id.tvCloneStatus)
+        if (!preserveReadData) {
+             tvCloneStatus.text = ""
+        }
+        // If preserveReadData is TRUE (Clone Cancel or Clone Success), we keep it? 
+        // If Clone Success: msg is "Success". Keep it.
+        // If Clone Cancel: msg was "Ready...". We should probably clear or change to "Canceled".
+        // But `finishAction` sets text THEN calls reset.
+        
+        // Let's just NOT clear tvCloneStatus in reset parameters for now, assume `finishAction` or `btnClone` manages it.
+        // Wait, if I start a NEW clone, I need to clear old status? 
+        // Yes, btnClone click should update it.
+        
+        // Restore button texts
+        btnWrite.text = getString(R.string.nfc_btn_write)
+        btnClone.text = getString(R.string.btn_clone)
+        btnWriteUid.text = getString(R.string.nfc_btn_write_uid)
+        
+        btnClone.isEnabled = (cachedNdefMessage != null)
+    }
+
+    private fun createNdefMessage(text: String, typeIndex: Int): NdefMessage? {
+        return try {
+            when (typeIndex) {
+                0 -> NdefMessage(arrayOf(createTextRecord(text)))
+                1 -> NdefMessage(arrayOf(NdefRecord.createUri(text)))
+                2 -> NdefMessage(arrayOf(NdefRecord.createUri("tel:$text")))
+                3 -> {
+                    if (selectedAppPackage != null) {
+                         NdefMessage(arrayOf(NdefRecord.createApplicationRecord(selectedAppPackage!!)))
+                    } else null
+                }
+                4 -> createWifiRecord(etWifiSsid.text.toString(), etWifiPass.text.toString())
+                5 -> createBluetoothRecord(etBtMac.text.toString())
+                6 -> createVCardRecord(etContactName.text.toString(), etContactPhone.text.toString(), etContactEmail.text.toString())
+                7 -> NdefMessage(arrayOf(NdefRecord.createUri("geo:${etLocLat.text},${etLocLon.text}")))
+                else -> null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
     
@@ -345,6 +600,7 @@ class NfcActivity : BaseActivity() {
             if (tag != null) {
                 when (currentAction) {
                     NfcAction.WRITE -> writeTag(tag)
+                    NfcAction.WRITE_UID -> writeUidToTag(tag)
                     NfcAction.LOCK -> lockTag(tag)
                     NfcAction.SET_PWD -> setTagPassword(tag, pendingPassword)
                     NfcAction.REMOVE_PWD -> removeTagPassword(tag, pendingPassword)
@@ -393,16 +649,18 @@ class NfcActivity : BaseActivity() {
             7 -> { // Location
                 layoutLocInput.visibility = View.VISIBLE
             }
+            8 -> { // UID
+                layoutTextInput.visibility = View.VISIBLE
+                layoutTextInput.hint = "Hex UID (e.g. 04:A1:B2:C3)"
+                etWrite.inputType = InputType.TYPE_CLASS_TEXT
+            }
         }
     }
 
     private fun validateInput(): Boolean {
         when (currentTypeIndex) {
             0, 1, 2 -> {
-                if (etWrite.text.isNullOrEmpty()) {
-                    Toast.makeText(this, getString(R.string.nfc_write_hint), Toast.LENGTH_SHORT).show()
-                    return false
-                }
+                // User requested to allow empty content
             }
             3 -> {
                 if (selectedAppPackage.isNullOrEmpty()) {
@@ -418,20 +676,37 @@ class NfcActivity : BaseActivity() {
             }
             5 -> { // Bluetooth
                 if (etBtMac.text.isNullOrEmpty() || etBtMac.text.length != 17) {
-                    Toast.makeText(this, "MAC地址格式错误", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.msg_invalid_mac_format), Toast.LENGTH_SHORT).show()
                     return false
                 }
             }
             6 -> { // Contact
                 if (etContactName.text.isNullOrEmpty() && etContactPhone.text.isNullOrEmpty()) {
-                    Toast.makeText(this, "请至少输入姓名或电话", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.msg_enter_name_or_phone), Toast.LENGTH_SHORT).show()
                     return false
                 }
             }
             7 -> { // Location
                 if (etLocLat.text.isNullOrEmpty() || etLocLon.text.isNullOrEmpty()) {
-                    Toast.makeText(this, "请输入经纬度", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.msg_enter_lat_lon), Toast.LENGTH_SHORT).show()
                     return false
+                }
+            }
+            8 -> { // UID
+                val uid = etWrite.text.toString().replace(":", "").replace(" ", "").trim()
+                if (uid.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.msg_enter_uid), Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                // Check hex pattern
+                if (!uid.matches(Regex("^[0-9A-Fa-f]+$"))) {
+                     Toast.makeText(this, getString(R.string.msg_uid_format_error), Toast.LENGTH_SHORT).show()
+                     return false
+                }
+                // Check length (usually 4 bytes = 8 chars, or 7 bytes = 14 chars)
+                if (uid.length != 8 && uid.length != 14 && uid.length != 20) {
+                     Toast.makeText(this, getString(R.string.msg_uid_length_error), Toast.LENGTH_SHORT).show()
+                     return false
                 }
             }
         }
@@ -617,6 +892,9 @@ class NfcActivity : BaseActivity() {
     }
 
     private fun readTag(tag: Tag) {
+        // Show UID
+        showTagUid(tag)
+        
         // First try to parse NDEF from Intent extras if available (usually in NDEF_DISCOVERED)
         // usage of intent properties on newIntent is tricky, better use the objects
         
@@ -659,6 +937,29 @@ class NfcActivity : BaseActivity() {
             }
         }
     }
+    
+    private fun showTagUid(tag: Tag) {
+        val uidBytes = tag.id
+        if (uidBytes != null && uidBytes.isNotEmpty()) {
+            val uidHex = bytesToHex(uidBytes)
+            tvTagUid.text = uidHex
+            layoutUidSection.visibility = View.VISIBLE
+        } else {
+            layoutUidSection.visibility = View.GONE
+        }
+    }
+    
+    private fun bytesToHex(bytes: ByteArray): String {
+        val sb = StringBuilder()
+        for (b in bytes) {
+            sb.append(String.format("%02X", b))
+            sb.append(":")
+        }
+        if (sb.isNotEmpty()) {
+            sb.setLength(sb.length - 1) // Remove last :
+        }
+        return sb.toString()
+    }
 
     private fun displayNdefMessages(msgs: List<NdefMessage>, tag: Tag? = null) {
         if (msgs.isNotEmpty()) {
@@ -699,13 +1000,22 @@ class NfcActivity : BaseActivity() {
 
     private fun getTagInfo(tag: Tag): String {
         val sb = StringBuilder()
+        
+        // Try to detect specific NTAG type first
+        val specificType = detectTagSpecifics(tag)
+        if (!specificType.isNullOrEmpty()) {
+            sb.append(specificType).append(" | ")
+        }
+
         try {
             val ndef = Ndef.get(tag)
             if (ndef != null) {
                 sb.append(if (ndef.isWritable) getString(R.string.msg_tag_writable) else getString(R.string.msg_tag_locked_readonly))
                 sb.append(" | ")
-                sb.append(ndef.type.substringAfterLast(".")) // Compact type name
-                sb.append(" | ")
+                if (specificType == null) {
+                    sb.append(ndef.type.substringAfterLast(".")) // Compact type name
+                    sb.append(" | ")
+                }
                 sb.append("${ndef.maxSize}字节")
             } else {
                 val formatable = NdefFormatable.get(tag)
@@ -715,14 +1025,252 @@ class NfcActivity : BaseActivity() {
                      sb.append(getString(R.string.msg_tag_readonly_non_ndef))
                 }
             }
-            // Add prominent tech info if generic
-            if (sb.isEmpty()) {
+            // Add prominent tech info if generic and no specific type found
+            if (sb.isEmpty() && specificType == null) {
                  sb.append(tag.techList.joinToString { it.substringAfterLast('.') })
             }
         } catch (e: Exception) {
             sb.append(getString(R.string.msg_tag_unavailable_info))
         }
         return sb.toString()
+    }
+
+    private fun detectTagSpecifics(tag: Tag): String? {
+        val techList = tag.techList
+
+        // 1. Mifare Classic
+        if (techList.any { it.contains("MifareClassic") }) {
+            val mc = MifareClassic.get(tag)
+            if (mc != null) {
+                val typeName = when (mc.type) {
+                    MifareClassic.TYPE_CLASSIC -> "Mifare Classic"
+                    MifareClassic.TYPE_PLUS -> "Mifare Plus"
+                    MifareClassic.TYPE_PRO -> "Mifare Pro"
+                    else -> "Mifare Classic"
+                }
+                val sizeStr = when (mc.size) {
+                    MifareClassic.SIZE_1K -> "1K"
+                    MifareClassic.SIZE_2K -> "2K"
+                    MifareClassic.SIZE_4K -> "4K"
+                    MifareClassic.SIZE_MINI -> "Mini"
+                    else -> "${mc.size}B"
+                }
+                return "$typeName $sizeStr"
+            }
+        }
+
+        // 2. Mifare Ultralight / NTAG
+        val ul = MifareUltralight.get(tag)
+        if (ul != null) {
+            // Try specific NTAG detection
+            try {
+                ul.connect()
+                val response = ul.transceive(byteArrayOf(0x60.toByte())) // GET_VERSION
+                if (response != null && response.size >= 8) {
+                    if (response[1] == 0x04.toByte()) { // NXP
+                       val sizeByte = response[6]
+                       return when (sizeByte) {
+                           0x0F.toByte() -> "NTAG213"
+                           0x11.toByte() -> "NTAG215"
+                           0x13.toByte() -> "NTAG216"
+                           0x12.toByte() -> "NTAG213 TT"
+                           0x0B.toByte() -> "NTAG203"
+                           else -> "NTAG (Size: ${String.format("%02X", sizeByte)})"
+                       }
+                    }
+                }
+            } catch (e: Exception) {
+                // Ignore
+            } finally {
+                try { ul.close() } catch (e: Exception) {}
+            }
+            
+            // Fallback for UL if NTAG check failed
+            return when (ul.type) {
+                MifareUltralight.TYPE_ULTRALIGHT_C -> "Mifare Ultralight C"
+                MifareUltralight.TYPE_ULTRALIGHT -> "Mifare Ultralight"
+                else -> "Mifare Ultralight (Unknown)"
+            }
+        }
+
+        // 3. Mifare DESFire / ISO-DEP
+        val isoDep = IsoDep.get(tag)
+        if (isoDep != null) {
+             val nfca = NfcA.get(tag)
+             if (nfca != null) {
+                 // Check SAK (Select Acknowledge)
+                 // SAK 0x20 = usually DESFire
+                 // SAK 0x24 = usually DESFire EV1/2/3
+                 // SAK 0x28 = JCOP / Emulation (often)
+                 val sak = nfca.sak.toInt() and 0xFF
+                 if (sak == 0x20) return "Mifare DESFire"
+                 if (sak == 0x24) return "Mifare DESFire EV1/2/3"
+                 if (sak == 0x28) return "ISO-DEP (JCOP/CPU)"
+             }
+             return "ISO-DEP (CPU Card)"
+        }
+
+        return null
+    }
+
+    private fun writeUidToTag(tag: Tag) {
+        val targetUidHex = pendingWriteText ?: return
+        val targetUid = hexToBytes(targetUidHex)
+        val techList = tag.techList
+
+        try {
+            var success: Boolean
+            
+            // Strategy 1: Mifare Classic (Block 0 overwrite)
+            if (techList.any { it.contains("MifareClassic") }) {
+                success = writeUidMifareClassic(tag, targetUid)
+            } 
+            // Strategy 2: Mifare Ultralight / NTAG (Page 0/1 overwrite)
+            else if (techList.any { it.contains("MifareUltralight") }) {
+                success = writeUidUltralight(tag, targetUid)
+            } else {
+                Toast.makeText(this, R.string.msg_uid_clone_not_supported, Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            if (success) {
+                // Success feedback using the status view
+                tvUidStatus.text = getString(R.string.msg_uid_write_success_short)
+                tvUidStatus.setTextColor(getColor(R.color.brand_primary)) 
+                
+                Toast.makeText(this, R.string.msg_uid_write_success, Toast.LENGTH_SHORT).show()
+                // Reset buttons and global state
+                resetToReadState()
+                
+                // Restore custom success message because resetToReadState cleared it
+                tvUidStatus.text = getString(R.string.msg_uid_write_success_short)
+            } else {
+                tvUidStatus.text = getString(R.string.msg_uid_write_fail_short)
+                tvUidStatus.setTextColor(getColor(R.color.color_error))
+                Toast.makeText(this, R.string.msg_uid_write_fail_short, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+             tvUidStatus.text = "Error: ${e.message}"
+             tvUidStatus.setTextColor(getColor(R.color.color_error))
+        }
+    }
+
+    private fun writeUidMifareClassic(tag: Tag, newUid: ByteArray): Boolean {
+        val mc = MifareClassic.get(tag) ?: return false
+        
+        try {
+            mc.connect()
+            
+            // Standard Magic Cards (Gen 2 / CUID) use standard Write Command on Block 0
+            // But Block 0 is usually write-protected. Direct Write only works if "Block 0 writable" is enabled
+            // or if it's a specific Chinese Magic Card (CUID).
+            
+            // 1. Authenticate Sector 0 (Factory Default Key: FFFFFFFFFFFF)
+            val defaultKey = byteArrayOf(0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte())
+            if (!mc.authenticateSectorWithKeyA(0, defaultKey)) {
+                // Try reading - sometimes no auth needed? Unlikely for MC.
+                return false
+            }
+
+            // 2. Read Block 0 (Manufacturer Block)
+            val block0 = mc.readBlock(0)
+            if (block0.size != 16) return false
+
+            // 3. Construct new Block 0
+            // Format 4-byte UID: [UID0][UID1][UID2][UID3][BCC][SAK][ATQA0][ATQA1][Manufacturer Data...]
+            val newBlock0 = block0.clone()
+            
+            if (newUid.size == 4) {
+                 // Copy UID
+                 System.arraycopy(newUid, 0, newBlock0, 0, 4)
+                 // Calc BCC: XOR of UID0..3
+                 newBlock0[4] = (newUid[0].toInt() xor newUid[1].toInt() xor newUid[2].toInt() xor newUid[3].toInt()).toByte()
+            } else if (newUid.size == 7) {
+                 // 7-byte UID support in MC is rare/complex layout, usually spans mostly Manufacturer data
+                 Toast.makeText(this, "暂不支持4字节卡写入7字节UID", Toast.LENGTH_SHORT).show()
+                 return false
+            } else {
+                 return false
+            }
+
+            // 4. Write Block 0
+            mc.writeBlock(0, newBlock0)
+            return true
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            try { mc.close() } catch (e: Exception) {}
+        }
+    }
+
+    private fun writeUidUltralight(tag: Tag, newUid: ByteArray): Boolean {
+        val ul = MifareUltralight.get(tag) ?: return false
+        
+        try {
+            ul.connect()
+            
+            // NTAG Structure:
+            // Page 0: [UID0][UID1][UID2][BCC0]
+            // Page 1: [UID3][UID4][UID5][UID6]
+            // Page 2: [BCC1][Internal][Lock0][Lock1]
+            
+            if (newUid.size != 7) {
+                 Toast.makeText(this, "目标UID必须为7字节(NTAG标准)", Toast.LENGTH_SHORT).show()
+                 return false
+            }
+
+            // Calc BCC0 = 0x88 ^ UID0 ^ UID1 ^ UID2
+            val bcc0 = (0x88 xor newUid[0].toInt() xor newUid[1].toInt() xor newUid[2].toInt()).toByte()
+            
+            // Calc BCC1 = UID3 ^ UID4 ^ UID5 ^ UID6
+            val bcc1 = (newUid[3].toInt() xor newUid[4].toInt() xor newUid[5].toInt() xor newUid[6].toInt()).toByte()
+
+            // Prepare Page 0
+            val page0 = byteArrayOf(newUid[0], newUid[1], newUid[2], bcc0)
+            
+            // Prepare Page 1
+            val page1 = byteArrayOf(newUid[3], newUid[4], newUid[5], newUid[6])
+            
+            // Prepare Page 2 (Need to read existing to keep Internal/Lock bytes if possible, or assume defaults?)
+            // Magic tags usually allow overwriting everything. Safer to Read first.
+            var page2 = byteArrayOf(bcc1, 0x48.toByte(), 0x00.toByte(), 0x00.toByte()) // Defaultish
+            try {
+                val existingPage2 = ul.readPages(2) // Returns 4 pages (16 bytes) usually
+                if (existingPage2.size >= 4) {
+                    page2 = byteArrayOf(bcc1, existingPage2[1], existingPage2[2], existingPage2[3])
+                }
+            } catch (e: Exception) {
+               // Read failed? default to overwrite
+            }
+            
+            // Write commands
+            // NOTE: Standard NTAGs will FAIL here. Only Magic NTAGs support this.
+            ul.writePage(0, page0)
+            ul.writePage(1, page1)
+            ul.writePage(2, page2) // Writing Page 2 usually updates BCC1
+            
+            return true
+            
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            try { ul.close() } catch (e: Exception) {}
+        }
+    }
+    
+    private fun hexToBytes(hex: String): ByteArray {
+        val cleanHex = hex.replace(":", "").replace(" ", "")
+        val len = cleanHex.length
+        val data = ByteArray(len / 2)
+        var i = 0
+        while (i < len) {
+            data[i / 2] = ((Character.digit(cleanHex[i], 16) shl 4) + Character.digit(cleanHex[i + 1], 16)).toByte()
+            i += 2
+        }
+        return data
     }
 
     private fun checkAndPromptAlipayDecode(content: String) {
@@ -930,17 +1478,7 @@ class NfcActivity : BaseActivity() {
             if (pendingWriteMessage != null) {
                 pendingWriteMessage!!
             } else {
-                 when (currentTypeIndex) {
-                    0 -> NdefMessage(arrayOf(createTextRecord(pendingWriteText!!))) // Text
-                    1 -> NdefMessage(arrayOf(NdefRecord.createUri(pendingWriteText!!))) // URL
-                    2 -> NdefMessage(arrayOf(NdefRecord.createUri("tel:${pendingWriteText!!}"))) // Phone
-                    3 -> NdefMessage(arrayOf(NdefRecord.createApplicationRecord(selectedAppPackage!!))) // App
-                    4 -> createWifiRecord(etWifiSsid.text.toString(), etWifiPass.text.toString()) // WiFi
-                    5 -> createBluetoothRecord(etBtMac.text.toString()) // Bluetooth
-                    6 -> createVCardRecord(etContactName.text.toString(), etContactPhone.text.toString(), etContactEmail.text.toString()) // Contact
-                    7 -> NdefMessage(arrayOf(NdefRecord.createUri("geo:${etLocLat.text},${etLocLon.text}"))) // Location
-                    else -> return
-                }
+                 createNdefMessage(pendingWriteText ?: "", currentTypeIndex) ?: return
             }
         } catch (e: Exception) {
              runOnUiThread { Toast.makeText(this, getString(R.string.msg_data_format_err, e.message), Toast.LENGTH_SHORT).show() }
@@ -1049,20 +1587,21 @@ class NfcActivity : BaseActivity() {
             if (ndef != null) {
                 ndef.connect()
                 if (ndef.canMakeReadOnly()) {
-                    if (ndef.makeReadOnly()) {
-                        finishAction(getString(R.string.msg_lock_success))
-                    } else {
-                        finishAction(getString(R.string.msg_lock_fail))
-                    }
+                     if (ndef.makeReadOnly()) {
+                         Toast.makeText(this, R.string.msg_lock_success, Toast.LENGTH_LONG).show()
+                         resetToReadState()
+                     } else {
+                         Toast.makeText(this, R.string.msg_lock_fail, Toast.LENGTH_LONG).show()
+                     }
                 } else {
-                    finishAction("标签不支持只读锁定")
+                    Toast.makeText(this, getString(R.string.msg_tag_readonly_support), Toast.LENGTH_SHORT).show()
                 }
                 ndef.close()
             } else {
-                finishAction("非NDEF标签，无法使用标准锁定")
+                 Toast.makeText(this, R.string.msg_tag_readonly_non_ndef, Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
-            finishAction("锁定出错: ${e.message}")
+            Toast.makeText(this, getString(R.string.msg_lock_fail) + ": " + e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -1079,7 +1618,7 @@ class NfcActivity : BaseActivity() {
                 // PWD Page addresses
                 when {
                     ultralight.type == android.nfc.tech.MifareUltralight.TYPE_ULTRALIGHT_C -> {
-                         finishAction("不支持此类标签 (Ultralight C)")
+                         finishAction("Ultralight C: " + getString(R.string.msg_unsupported_tag_tech))
                          return
                     }
                     // Approx detection
@@ -1106,7 +1645,7 @@ class NfcActivity : BaseActivity() {
                     0x11 -> Triple(133, 134, 131) // NTAG215
                     0x13 -> Triple(229, 230, 227) // NTAG216
                     else -> {
-                        finishAction("未知或不支持的NTAG型号")
+                        finishAction(getString(R.string.msg_unknown_ntag))
                         return
                     }
                 }
@@ -1148,11 +1687,11 @@ class NfcActivity : BaseActivity() {
                 ultralight.close()
                 
             } catch (e: Exception) {
-                finishAction("设置密码失败: ${e.message}")
+                finishAction(getString(R.string.msg_set_pwd_fail, e.message))
                 e.printStackTrace()
             }
         } else {
-             finishAction("不支持的标签技术 (需Ultralight/NTAG)")
+             finishAction(getString(R.string.msg_unsupported_tag_tech_specific))
         }
     }
 
@@ -1174,7 +1713,7 @@ class NfcActivity : BaseActivity() {
                     ultralight.transceive(authCmd)
                     // If no exception, auth success usually, or check response PACK
                 } catch (e: Exception) {
-                    finishAction("验证失败或无法移除")
+                    finishAction(getString(R.string.msg_auth_fail_remove))
                     return
                 }
                 
@@ -1186,7 +1725,7 @@ class NfcActivity : BaseActivity() {
                     0x11 -> Triple(133, 134, 131)
                     0x13 -> Triple(229, 230, 227)
                     else -> {
-                       finishAction("未知型号")
+                       finishAction(getString(R.string.msg_unknown_model))
                        return
                     }
                 }
@@ -1203,14 +1742,14 @@ class NfcActivity : BaseActivity() {
                 // Better clear it if removing protection.
                 ultralight.writePage(uPwdPage, byteArrayOf(0, 0, 0, 0))
                 
-                finishAction("密码保护已移除")
+                finishAction(getString(R.string.msg_pwd_removed))
                 ultralight.close()
                 
             } catch (e: Exception) {
-                finishAction("操作失败: ${e.message}")
+                finishAction(getString(R.string.msg_op_failed, e.message))
             }
         } else {
-             finishAction("不支持的标签技术")
+             finishAction(getString(R.string.msg_unsupported_tag_tech))
         }
     }
     
@@ -1220,23 +1759,36 @@ class NfcActivity : BaseActivity() {
             
             when (currentAction) {
                 NfcAction.WRITE -> {
-                    tvWriteStatus.text = msg
-                    tvWriteStatus.setTextColor(getColor(R.color.brand_primary))
-                    // Could enable batch writing here by NOT resetting action?
-                    // For now, reset to Read for safety.
+                    if (pendingWriteMessage == cachedNdefMessage) {
+                         // Was Clone
+                         val tvCloneStatus = findViewById<TextView>(R.id.tvCloneStatus)
+                         tvCloneStatus.text = msg
+                         // Reset buttons immediately
+                         resetToReadState(true)
+                    } else {
+                         // Was normal Write
+                         tvWriteStatus.text = msg
+                         tvWriteStatus.setTextColor(getColor(R.color.brand_primary))
+                         resetToReadState()
+                    }
+                }
+                NfcAction.WRITE_UID -> {
+                     tvUidStatus.text = msg
+                     tvUidStatus.setTextColor(getColor(R.color.brand_primary))
+                     resetToReadState()
                 }
                 NfcAction.LOCK, NfcAction.SET_PWD, NfcAction.REMOVE_PWD -> {
                     tvSecurityStatus.text = msg
                     tvSecurityStatus.setTextColor(getColor(R.color.brand_primary))
+                    resetToReadState()
                 }
                 else -> {
                     tvStatus.text = msg
                     tvStatus.setTextColor(getColor(R.color.brand_primary))
+                    // Read doesn't need full reset, but ensures state validity
+                    currentAction = NfcAction.READ
                 }
             }
-
-            currentAction = NfcAction.READ
-            pendingPassword = null
         }
     }
 
